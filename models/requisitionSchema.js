@@ -1,5 +1,5 @@
-const monoogose = require('mongoose');
-const Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+// const Schema = mongoose.Schema;
 
 /**
  * Requisition Schema is a model of one product requisition
@@ -10,7 +10,7 @@ const Schema = mongoose.Schema;
  * - qtd of products
  * - requestId is a ID of the guy who ade the requisition. 
  */
-const RequisitionSchema = new Schema({
+const RequisitionSchema = mongoose.Schema({
 	siorg: String,
 	description: { type: String, require: true },
 	justification: { type: String, require: true },
@@ -26,3 +26,42 @@ const RequisitionSchema = new Schema({
 });
 
 module.exports = mongoose.model('Requisition', RequisitionSchema);
+const Requisition = mongoose.model('Requisition', RequisitionSchema);
+
+/**
+ * 
+ * @param {mongoose.Types.ObjectId} id requisition id
+ * @param {function(err, requisition)} callback callback function
+ */
+module.exports.getRequisitionById = function (id, callback) {
+	Requisition.findById(id, callback);
+};
+
+module.exports.getAllRequisition = function (callback){
+	Requisition.find(callback);
+};
+
+module.exports.addNewRequisition = function (newRequisition, callback){
+	Requisition.create(newRequisition, callback);
+}
+
+// update requisition
+module.exports.updateRequisition = function (updatedRequisition, callback){
+	this.getRequisitionById(updatedRequisition._id, function (err, requisition) {
+		if (err) throw err;
+		if (requisition) {
+			requisition.siorg = updatedRequisition.siorg;
+			requisition.description = updatedRequisition.description;
+			requisition.justification = updatedRequisition.justification;
+			requisition.prices = updatedRequisition.prices;
+			requisition.priceJustification = updatedRequisition.priceJustification;
+			requisition.qtd = updatedRequisition.qtd;
+			requisition.save(callback);
+		}
+	})
+}
+
+// delete requisition
+module.exports.deleteRequisition = function (id, callback){
+	Requisition.findById(id).remove(callback);
+}
