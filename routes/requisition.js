@@ -3,6 +3,7 @@ const router = express.Router();
 const Requisition = require('../models/requisitionSchema');
 const { check, validationResult } = require('express-validator/check');
 
+// TODO: validate an array
 const requisitionValidator = [
 	check('siorg')
 		.exists()
@@ -27,7 +28,7 @@ const requisitionValidator = [
 router.get('/requisition/:id', function (req, res) {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		return res.status(422).json({ sucesso: false, errors: errors.mapped() });
+		return res.status(422).json({ success: false, errors: errors.mapped() });
 	}
 
 	const id = req.params.id;
@@ -35,7 +36,7 @@ router.get('/requisition/:id', function (req, res) {
 		if (err) {
 			res.status(400).send(err);
 		}
-		res.json(requisition);
+		res.json({ success: true, requisition: requisition });
 	});
 });
 
@@ -46,14 +47,14 @@ router.get('/requisition/:id', function (req, res) {
 router.get('/requisition/', function (req, res) {
 	const errors = validationResult(req);
 	if (!errors.isEmpty()) {
-		return res.status(422).json({ sucesso: false, errors: errors.mapped() });
+		return res.status(422).json({ success: false, errors: errors.mapped() });
 	}
 
 	Requisition.getAllRequisition(function (err, requisitions) {
 		if (err) {
 			res.status(400).send(err);
 		}
-		res.json(requisitions);
+		res.json({ success: false, requisitions: requisitions });
 	});
 });
 
@@ -83,11 +84,11 @@ router.post('/requisition/', requisitionValidator, function (req, res) {
 	Requisition.addNewRequisition(newRequisition, function (err, requisition) {
 		const errors = validationResult(req);
 		if (!errors.isEmpty()) {
-			return res.status(422).json({ sucesso: false, errors: errors.mapped() });
+			return res.status(422).json({ success: false, errors: errors.mapped() });
 		}
-	
+
 		if (err) {
-			res.json({ success: false, msg: 'Failed to add requisition' });
+			res.status(400).json({ success: false, msg: 'Failed to add requisition', err: err });
 		} else {
 			res.json({ success: true, msg: 'requisition registered', requisition: requisition });
 		}
@@ -113,7 +114,7 @@ router.put('/requisition/:id', requisitionValidator, function (req, res, next) {
 		if (!errors.isEmpty()) {
 			return res.status(422).json({ sucesso: false, errors: errors.mapped() });
 		}
-	
+
 		if (err) {
 			res.json({ success: false, msg: 'Failed to update requisition' });
 		} else {
@@ -136,7 +137,7 @@ router.delete('/requisition/:id', function (req, res, next) {
 		if (err) {
 			res.json({ success: false, msg: 'Failed to delete requisition' });
 		} else {
-			res.json({ success: true, msg: 'requisition deleted' });
+			res.json({ success: true, msg: 'Requisition deleted' });
 		}
 	});
 });
