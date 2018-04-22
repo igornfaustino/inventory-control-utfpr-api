@@ -10,6 +10,7 @@ const config = require('config'); //we load the db location from the JSON files
 // routes
 const index = require('./routes/index');
 const users = require('./routes/users');
+const requisition = require('./routes/requisition');
 const purchase = require('./routes/purchase');
 
 //db options
@@ -18,7 +19,9 @@ const options = {
 };
 
 //db connection      
-mongoose.connect(config.DBHost, options);
+mongoose.connect(config.DBHost, options, function () {
+	console.log("database connected");
+});
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 
@@ -38,6 +41,7 @@ server.use(cookieParser());
 // use routers
 server.use('/api', index);
 server.use('/api', users);
+server.use('/api', requisition);
 server.use('/api', purchase);
 
 server.listen(port);

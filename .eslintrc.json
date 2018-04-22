@@ -7,9 +7,7 @@
     "parserOptions": {
         "sourceType": "module"
     },
-    "plugins": [
-        "chai-friendly"
-    ],
+    "plugins": [],
     "rules": {
         "indent": [
             "error",
@@ -28,7 +26,6 @@
             "always"
         ],
         "no-console": "off",
-        "no-unused-expressions": 0,
-        "chai-friendly/no-unused-expressions": 2
+        "no-unused-expressions": 0
     }
 }
