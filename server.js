@@ -10,6 +10,7 @@ const config = require('config'); //we load the db location from the JSON files
 // routes
 const index = require('./routes/index');
 const users = require('./routes/users');
+const purchase = require('./routes/purchase');
 
 //db options
 const options = {
@@ -37,6 +38,7 @@ server.use(cookieParser());
 // use routers
 server.use('/api', index);
 server.use('/api', users);
+server.use('/api', purchase);
 
 server.listen(port);
 console.log('Listening on port ' + port);
