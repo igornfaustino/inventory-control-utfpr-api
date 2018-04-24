@@ -17,7 +17,8 @@ const RequisitionSchema = mongoose.Schema({
 	prices: [
 		{
 			type: { type: String, require: true },
-			priceRef: String
+			priceRef: String,
+			value: Number,
 		}
 	],
 	priceJustification: String,

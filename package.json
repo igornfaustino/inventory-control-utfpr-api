@@ -12,8 +12,10 @@
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "express": "~4.16.0",
+    "express-joi-validator": "^2.0.0",
     "express-validator": "^5.1.2",
     "http-errors": "~1.6.2",
+    "joi": "^13.2.0",
     "mongoose": "^4.4.15",
     "morgan": "~1.9.0"
   },
