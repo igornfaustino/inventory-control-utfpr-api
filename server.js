@@ -44,6 +44,14 @@ server.use('/api', users);
 server.use('/api', requisition);
 server.use('/api', purchase);
 
+//error handler
+
+server.use(function (err, req, res, next) {
+	if (err.isBoom) {
+		return res.status(err.output.statusCode).json(err.output.payload);
+	}
+});
+
 server.listen(port);
 console.log('Listening on port ' + port);
 
