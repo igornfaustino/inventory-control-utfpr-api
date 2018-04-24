@@ -10,7 +10,7 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('Requisition', () => {
+describe('Items Requisition Route', () => {
 	beforeEach((done) => {
 		Requisition.remove({}, (err) => {
 			done();
@@ -39,10 +39,9 @@ describe('Requisition', () => {
 				.post('/api/requisition')
 				.send(requisition)
 				.end((err, res) => {
-					res.should.have.status(422);
+					res.should.have.status(400);
 					res.body.should.be.a('object');
-					res.body.should.have.property('errors');
-					res.body.should.have.property('success').eql(false);
+					res.body.should.have.property('error');
 					done();
 				});
 		});
@@ -55,10 +54,32 @@ describe('Requisition', () => {
 				.post('/api/requisition')
 				.send(requisition)
 				.end((err, res) => {
-					res.should.have.status(422);
+					res.should.have.status(400);
 					res.body.should.be.a('object');
-					res.body.should.have.property('errors');
-					res.body.should.have.property('success').eql(false);
+					res.body.should.have.property('error');
+					done();
+				});
+		});
+		it('it should not POST a requisition with a new field', (done) => {
+			let requisition = {
+				"siorg": "12345",
+				"wrongField": "blabla",
+				"description": "blablabla",
+				"justification": "blabla",
+				"prices": [{
+					"type": "url",
+					"priceRef": "www.google.com",
+					"value": 12.0
+				}],
+				"qtd": 3
+			}
+			chai.request(server)
+				.post('/api/requisition')
+				.send(requisition)
+				.end((err, res) => {
+					res.should.have.status(400);
+					res.body.should.be.a('object');
+					res.body.should.have.property('error');
 					done();
 				});
 		});
@@ -69,7 +90,8 @@ describe('Requisition', () => {
 				"justification": "blabla",
 				"prices": [{
 					"type": "url",
-					"priceRef": "www.google.com"
+					"priceRef": "www.google.com",
+					"value": 12.0
 				}],
 				"qtd": 3
 			}
@@ -97,7 +119,8 @@ describe('Requisition', () => {
 				justification: "blabla",
 				prices: [{
 					type: "url",
-					priceRef: "www.google.com"
+					priceRef: "www.google.com",
+					value: 12.0
 				}],
 				qtd: 3
 			});
@@ -128,7 +151,8 @@ describe('Requisition', () => {
 				justification: "blabla",
 				prices: [{
 					type: "url",
-					priceRef: "www.google.com"
+					priceRef: "www.google.com",
+					value: 12.0
 				}],
 				qtd: 3
 			});
@@ -141,7 +165,8 @@ describe('Requisition', () => {
 						justification: "blabla",
 						prices: [{
 							type: "url",
-							priceRef: "www.google.com.br"
+							priceRef: "www.google.com.br",
+							value: 13.0
 						}],
 						qtd: 3
 					})
@@ -163,8 +188,8 @@ describe('Requisition', () => {
 	/*
 	 * Test the /DELETE/:id route
 	 */
-	describe('/DELETE/:id book', () => {
-		it('it should DELETE a book given the id', (done) => {
+	describe('/DELETE/:id requisition', () => {
+		it('it should DELETE a requisition given the id', (done) => {
 			let requisition = new Requisition({
 				siorg: "12345",
 				description: "blablabla",
