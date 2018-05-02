@@ -2,9 +2,9 @@ const Joi = require('joi');
 
 const PriceSchema = {
     _id: Joi.any(),
-    type: Joi.string().required(),
-    priceRef: Joi.string().required(),
-    value: Joi.number().required(),
+    requisitionType: Joi.string().required(),
+    reference: Joi.string().required(),
+    value: Joi.number().optional(),
 };
 
 const SupplierSchema = {

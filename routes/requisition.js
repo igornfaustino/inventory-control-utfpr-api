@@ -26,12 +26,12 @@ router.get('/requisition/:id', function (req, res) {
  * GET /api/requisitions/
  * return all requisitions
  */
-router.get('/requisition/', function (req, res) {
+router.get('/requisitions/', function (req, res) {
 	Requisition.getAllRequisition(function (err, requisitions) {
 		if (err) {
 			res.status(400).send(err);
 		}
-		res.json({ success: false, requisitions: requisitions });
+		res.json({ success: true, requisitions: requisitions });
 	});
 });
 

@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors')
 const port = 8080;
 const config = require('config'); //we load the db location from the JSON files
 
@@ -37,6 +38,8 @@ server.use(bodyParser.urlencoded({ extended: true }));
 server.use(bodyParser.text());
 server.use(bodyParser.json({ type: 'application/json' }));
 server.use(cookieParser());
+
+server.use(cors());
 
 // use routers
 server.use('/api', index);

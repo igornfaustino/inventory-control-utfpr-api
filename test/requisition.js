@@ -19,7 +19,7 @@ describe('Items Requisition Route', () => {
 	describe('/GET requisition', () => {
 		it('it should GET all the requisition', (done) => {
 			chai.request(server)
-				.get('/api/requisition')
+				.get('/api/requisitions')
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.should.be.a('object');
