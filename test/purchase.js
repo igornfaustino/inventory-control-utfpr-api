@@ -64,8 +64,8 @@ describe('Purchase Route', () => {
                         "qtd": "blabla",
                         "prices": [
                             {
-                                "type": "url",
-                                "priceRef": "blalba",
+                                "requisitionType": "url",
+                                "reference": "blalba",
                                 "value": "blabla"
                             }
                         ],
@@ -111,8 +111,8 @@ describe('Purchase Route', () => {
                         "qtd": 12,
                         "prices": [
                             {
-                                "type": "url",
-                                "priceRef": "blalba",
+                                "requisitionType": "url",
+                                "reference": "blalba",
                                 "value": 12
                             }
                         ],
@@ -158,8 +158,8 @@ describe('Purchase Route', () => {
                         "qtd": 12,
                         "prices": [
                             {
-                                "type": "url",
-                                "priceRef": "blalba",
+                                "requisitionType": "url",
+                                "reference": "blalba",
                                 "value": 12
                             }
                         ],
@@ -206,8 +206,8 @@ describe('Purchase Route', () => {
                         "qtd": 12,
                         "prices": [
                             {
-                                "type": "url",
-                                "priceRef": "blalba",
+                                "requisitionType": "url",
+                                "reference": "blalba",
                                 "value": 12
                             }
                         ],
@@ -256,8 +256,8 @@ describe('Purchase Route', () => {
                         "qtd": 12,
                         "prices": [
                             {
-                                "type": "url",
-                                "priceRef": "blalba",
+                                "requisitionType": "url",
+                                "reference": "blalba",
                                 "value": 12
                             }
                         ],
@@ -294,8 +294,8 @@ describe('Purchase Route', () => {
                                 "qtd": 12,
                                 "prices": [
                                     {
-                                        "type": "url",
-                                        "priceRef": "blalba",
+                                        "requisitionType": "url",
+                                        "reference": "blalba",
                                         "value": 12
                                     }
                                 ],
@@ -342,8 +342,8 @@ describe('Purchase Route', () => {
                         "qtd": 12,
                         "prices": [
                             {
-                                "type": "url",
-                                "priceRef": "blalba",
+                                "requisitionType": "url",
+                                "reference": "blalba",
                                 "value": 12
                             }
                         ],

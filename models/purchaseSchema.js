@@ -28,8 +28,8 @@ const Purchasechema = mongoose.Schema({
         justification: { type: String, require: true },
         prices: [
             {
-                type: { type: String, require: true },
-                priceRef: String,
+                requisitionType: { type: String, require: true },
+                reference: String,
                 value: Number
             }
         ],

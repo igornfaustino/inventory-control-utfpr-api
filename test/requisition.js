@@ -67,8 +67,8 @@ describe('Items Requisition Route', () => {
 				"description": "blablabla",
 				"justification": "blabla",
 				"prices": [{
-					"type": "url",
-					"priceRef": "www.google.com",
+					"requisitionType": "url",
+					"reference": "www.google.com",
 					"value": 12.0
 				}],
 				"qtd": 3
@@ -89,8 +89,8 @@ describe('Items Requisition Route', () => {
 				"description": "blablabla",
 				"justification": "blabla",
 				"prices": [{
-					"type": "url",
-					"priceRef": "www.google.com",
+					"requisitionType": "url",
+					"reference": "www.google.com",
 					"value": 12.0
 				}],
 				"qtd": 3
@@ -118,8 +118,8 @@ describe('Items Requisition Route', () => {
 				description: "blablabla",
 				justification: "blabla",
 				prices: [{
-					type: "url",
-					priceRef: "www.google.com",
+					requisitionType: "url",
+					reference: "www.google.com",
 					value: 12.0
 				}],
 				qtd: 3
@@ -150,8 +150,8 @@ describe('Items Requisition Route', () => {
 				description: "blablabla",
 				justification: "blabla",
 				prices: [{
-					type: "url",
-					priceRef: "www.google.com",
+					requisitionType: "url",
+					reference: "www.google.com",
 					value: 12.0
 				}],
 				qtd: 3
@@ -164,8 +164,8 @@ describe('Items Requisition Route', () => {
 						description: "blablablaalterado",
 						justification: "blabla",
 						prices: [{
-							type: "url",
-							priceRef: "www.google.com.br",
+							requisitionType: "url",
+							reference: "www.google.com.br",
 							value: 13.0
 						}],
 						qtd: 3
@@ -195,8 +195,8 @@ describe('Items Requisition Route', () => {
 				description: "blablabla",
 				justification: "blabla",
 				prices: [{
-					type: "url",
-					priceRef: "www.google.com"
+					requisitionType: "url",
+					reference: "www.google.com"
 				}],
 				qtd: 3
 			});
