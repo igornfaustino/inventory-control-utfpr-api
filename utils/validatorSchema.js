@@ -1,10 +1,10 @@
 const Joi = require('joi');
 
-const PriceSchema = {
+const QuotationSchema = {
     _id: Joi.any(),
     requisitionType: Joi.string().required(),
     reference: Joi.string().required(),
-    value: Joi.number().optional(),
+    price: Joi.number().optional(),
 };
 
 const SupplierSchema = {
@@ -30,7 +30,7 @@ const ItemsRequisitionSchema = {
     justification: Joi.string().regex(/^(=?.*[A-Za-z\d$@$!%*?&])$/).required(),
     priceJustification: Joi.string().regex(/^(=?.*[A-Za-z\d$@$!%*?&])$/),
     qtd: Joi.number().required(),
-    prices: Joi.array().items(Joi.object().keys(PriceSchema)),
+    quotation: Joi.array().items(Joi.object().keys(QuotationSchema)),
     itemSupplier: Joi.object().keys(SupplierSchema),
     date: Joi.date(),
     status: Joi.string()
@@ -49,7 +49,7 @@ const PurchaseRequisitionSchema = {
 }
 
 module.exports = {
-    PriceSchema,
+    QuotationSchema,
     SupplierSchema,
     ItemsRequisitionSchema,
     PurchaseRequisitionSchema

@@ -66,10 +66,10 @@ describe('Items Requisition Route', () => {
 				"wrongField": "blabla",
 				"description": "blablabla",
 				"justification": "blabla",
-				"prices": [{
+				"quotation": [{
 					"requisitionType": "url",
 					"reference": "www.google.com",
-					"value": 12.0
+					"price": 12.0
 				}],
 				"qtd": 3
 			}
@@ -88,10 +88,10 @@ describe('Items Requisition Route', () => {
 				"siorg": "12345",
 				"description": "blablabla",
 				"justification": "blabla",
-				"prices": [{
+				"quotation": [{
 					"requisitionType": "url",
 					"reference": "www.google.com",
-					"value": 12.0
+					"price": 12.0
 				}],
 				"qtd": 3
 			}
@@ -105,7 +105,7 @@ describe('Items Requisition Route', () => {
 					res.body.requisition.should.have.property('siorg');
 					res.body.requisition.should.have.property('description');
 					res.body.requisition.should.have.property('justification');
-					res.body.requisition.should.have.property('prices');
+					res.body.requisition.should.have.property('quotation');
 					res.body.requisition.should.have.property('qtd');
 					done();
 				});
@@ -117,10 +117,10 @@ describe('Items Requisition Route', () => {
 				siorg: "12345",
 				description: "blablabla",
 				justification: "blabla",
-				prices: [{
+				quotation: [{
 					requisitionType: "url",
 					reference: "www.google.com",
-					value: 12.0
+					price: 12.0
 				}],
 				qtd: 3
 			});
@@ -135,7 +135,7 @@ describe('Items Requisition Route', () => {
 						res.body.requisition.should.have.property('siorg');
 						res.body.requisition.should.have.property('description');
 						res.body.requisition.should.have.property('justification');
-						res.body.requisition.should.have.property('prices');
+						res.body.requisition.should.have.property('quotation');
 						res.body.requisition.should.have.property('qtd');
 						done();
 					});
@@ -149,10 +149,10 @@ describe('Items Requisition Route', () => {
 				siorg: "12345",
 				description: "blablabla",
 				justification: "blabla",
-				prices: [{
+				quotation: [{
 					requisitionType: "url",
 					reference: "www.google.com",
-					value: 12.0
+					price: 12.0
 				}],
 				qtd: 3
 			});
@@ -163,10 +163,10 @@ describe('Items Requisition Route', () => {
 						siorg: "123456",
 						description: "blablablaalterado",
 						justification: "blabla",
-						prices: [{
+						quotation: [{
 							requisitionType: "url",
 							reference: "www.google.com.br",
-							value: 13.0
+							price: 13.0
 						}],
 						qtd: 3
 					})
@@ -177,8 +177,8 @@ describe('Items Requisition Route', () => {
 						res.body.requisition.should.have.property('description').eql("blablablaalterado");
 						res.body.requisition.should.have.property('description').eql("blablablaalterado");
 						res.body.requisition.should.have.property('justification').eql("blabla");
-						res.body.requisition.prices.should.be.a('array');
-						res.body.requisition.prices.length.should.be.eql(1);
+						res.body.requisition.quotation.should.be.a('array');
+						res.body.requisition.quotation.length.should.be.eql(1);
 						res.body.requisition.should.have.property('qtd').eql(3);
 						done();
 					});
@@ -194,7 +194,7 @@ describe('Items Requisition Route', () => {
 				siorg: "12345",
 				description: "blablabla",
 				justification: "blabla",
-				prices: [{
+				quotation: [{
 					requisitionType: "url",
 					reference: "www.google.com"
 				}],

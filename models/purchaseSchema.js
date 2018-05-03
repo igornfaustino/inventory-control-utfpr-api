@@ -10,7 +10,7 @@ const mongoose = require('mongoose');
  * - requester
  * - originOfCost: for example consumption or permanent equipment
  * - sector: 'DACOM'
- * - itemId: used for searching and recovering it's justification, prices and descriptions from
+ * - itemId: used for searching and recovering it's justification, quotation and descriptions from
  *   the Requisition Schema.
  * - itemSupplier: each product need to be provided by a supplier. Supplier model holds information
  *   about CNPJ, corporate name (razão social), company name, bids on other trades.
@@ -26,11 +26,11 @@ const Purchasechema = mongoose.Schema({
         siorg: String,
         description: { type: String, require: true },
         justification: { type: String, require: true },
-        prices: [
+        quotation: [
             {
                 requisitionType: { type: String, require: true },
                 reference: String,
-                value: Number
+                price: Number
             }
         ],
         priceJustification: String,

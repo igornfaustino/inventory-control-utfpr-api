@@ -62,11 +62,11 @@ describe('Purchase Route', () => {
                         "justification": "blablalbalba",
                         "priceJustification": "blabla",
                         "qtd": "blabla",
-                        "prices": [
+                        "quotation": [
                             {
                                 "requisitionType": "url",
                                 "reference": "blalba",
-                                "value": "blabla"
+                                "price": "blabla"
                             }
                         ],
                         "itemSupplier": {
@@ -109,11 +109,11 @@ describe('Purchase Route', () => {
                         "justification": "blablalbalba",
                         "priceJustification": "blabla",
                         "qtd": 12,
-                        "prices": [
+                        "quotation": [
                             {
                                 "requisitionType": "url",
                                 "reference": "blalba",
-                                "value": 12
+                                "price": 12
                             }
                         ],
                         "itemSupplier": {
@@ -156,11 +156,11 @@ describe('Purchase Route', () => {
                         "justification": "blablalbalba",
                         "priceJustification": "blabla",
                         "qtd": 12,
-                        "prices": [
+                        "quotation": [
                             {
                                 "requisitionType": "url",
                                 "reference": "blalba",
-                                "value": 12
+                                "price": 12
                             }
                         ],
                         "itemSupplier": {
@@ -204,11 +204,11 @@ describe('Purchase Route', () => {
                         "justification": "blablalbalba",
                         "priceJustification": "blabla",
                         "qtd": 12,
-                        "prices": [
+                        "quotation": [
                             {
                                 "requisitionType": "url",
                                 "reference": "blalba",
-                                "value": 12
+                                "price": 12
                             }
                         ],
                         "itemSupplier": {
@@ -254,11 +254,11 @@ describe('Purchase Route', () => {
                         "justification": "blablalbalba",
                         "priceJustification": "blabla",
                         "qtd": 12,
-                        "prices": [
+                        "quotation": [
                             {
                                 "requisitionType": "url",
                                 "reference": "blalba",
-                                "value": 12
+                                "price": 12
                             }
                         ],
                         "itemSupplier": {
@@ -292,11 +292,11 @@ describe('Purchase Route', () => {
                                 "justification": "blablalbalba",
                                 "priceJustification": "blabla",
                                 "qtd": 12,
-                                "prices": [
+                                "quotation": [
                                     {
                                         "requisitionType": "url",
                                         "reference": "blalba",
-                                        "value": 12
+                                        "price": 12
                                     }
                                 ],
                                 "itemSupplier": {
@@ -340,11 +340,11 @@ describe('Purchase Route', () => {
                         "justification": "blablalbalba",
                         "priceJustification": "blabla",
                         "qtd": 12,
-                        "prices": [
+                        "quotation": [
                             {
                                 "requisitionType": "url",
                                 "reference": "blalba",
-                                "value": 12
+                                "price": 12
                             }
                         ],
                         "itemSupplier": {
