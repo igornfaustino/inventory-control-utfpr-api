@@ -23,6 +23,8 @@ const RequisitionSchema = mongoose.Schema({
 	],
 	priceJustification: String,
 	qtd: { type: Number, require: true },
+	date: Date,
+	status: String
 	// requesterId: { type: String, require: true }
 });
 
@@ -57,6 +59,7 @@ module.exports.updateRequisition = function (updatedRequisition, callback){
 			requisition.prices = updatedRequisition.prices;
 			requisition.priceJustification = updatedRequisition.priceJustification;
 			requisition.qtd = updatedRequisition.qtd;
+			requisition.status = updatedRequisition.status;
 			requisition.save(callback);
 		}
 	})

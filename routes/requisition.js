@@ -3,10 +3,12 @@ const router = express.Router();
 const Requisition = require('../models/requisitionSchema');
 const expressJoi = require('express-joi-validator');
 const { ItemsRequisitionSchema } = require('../utils/validatorSchema');
-
+const moment = require('moment');
 const BodyValidation = {
-    body: ItemsRequisitionSchema
+	body: ItemsRequisitionSchema
 }
+
+moment().locale('pt-br');
 
 /**
  * GET /api/requisitions/:id
@@ -51,7 +53,8 @@ router.get('/requisitions/', function (req, res) {
  */
 router.post('/requisition/', expressJoi(BodyValidation), function (req, res) {
 	let newRequisition = req.body
-
+	newRequisition.date = moment().format('L')
+	newRequisition.status = 'pendente'
 	Requisition.addNewRequisition(newRequisition, function (err, requisition) {
 		if (err) {
 			res.status(400).json({ success: false, msg: 'Failed to add requisition', err: err });
