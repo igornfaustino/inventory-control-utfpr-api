@@ -27,7 +27,7 @@ const ItemsRequisitionSchema = {
     siorg: Joi.string(),
     __v: Joi.any(),
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),
-    justification: Joi.string().regex(/^[^%<>^$]+$/).required(),
+    justification: Joi.string().regex(/^[^%<>^$]+$/),
     priceJustification: Joi.string().regex(/^[^%<>^$]+$/),
     qtd: Joi.number().required(),
     quotation: Joi.array().items(Joi.object().keys(QuotationSchema)),
