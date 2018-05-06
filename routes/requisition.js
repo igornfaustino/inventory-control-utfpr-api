@@ -54,8 +54,12 @@ router.get('/requisitions/', function (req, res) {
  */
 router.post('/requisition/', expressJoi(BodyValidation), function (req, res) {
 	let newRequisition = req.body
-	newRequisition.date = moment().format('L')
-	newRequisition.status = 'pendente'
+	if (!req.body.date) {
+		newRequisition.date = moment().format('L')
+	}
+	if (!req.body.status) {
+		newRequisition.status = 'pendente'
+	}
 	Requisition.addNewRequisition(newRequisition, function (err, requisition) {
 		if (err) {
 			res.status(400).json({ success: false, msg: 'Failed to add requisition', err: err });
