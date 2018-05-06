@@ -76,7 +76,7 @@ router.post('/purchase/', expressJoi(BodyValidation), function (req, res) {
     Purchase.addNewPurchase(newPurchase, function (err, purchase) {
         if (err) {
             //res.json(err);
-            res.json({ success: false, msg: 'Failed to add purchase' });
+            res.json({ success: false, msg: 'Failed to add purchase', err: err });
         } else {
             res.json({ success: true, msg: 'Purchase added', purchase: purchase });
         }

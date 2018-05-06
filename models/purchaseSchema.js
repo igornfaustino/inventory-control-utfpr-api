@@ -21,7 +21,7 @@ const Purchasechema = mongoose.Schema({
     requisitionDate: String,
     UGR: String,
     sector: String,
-    requester: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
+    requester: String,
     requisitionItems: [{
         item: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
         itemSupplier: {

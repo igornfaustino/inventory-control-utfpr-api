@@ -48,7 +48,7 @@ describe('Purchase Route', () => {
                     done();
                 });
         });
-        it('it should not accept a Purchase with string in the qtd', (done) => {
+        it('it should not accept a Purchase with string in the number', (done) => {
             let purchase = {
                 "management": "UTFPR",
                 "requisitionDate": "01-19-2005",
@@ -57,24 +57,12 @@ describe('Purchase Route', () => {
                 "requester": "zanone",
                 "requisitionItems": [
                     {
-                        "siorg": "1",
-                        "description": "blablabla",
-                        "justification": "blablalbalba",
-                        "priceJustification": "blabla",
-                        "qtd": "blabla",
-                        "quotation": [
-                            {
-                                "requisitionType": "url",
-                                "reference": "blalba",
-                                "price": "blabla"
-                            }
-                        ],
                         "itemSupplier": {
                             "name": "Carlos Alberto",
                             "cnpj": "123456789",
                             "phone": "15996954572",
                             "address": {
-                                "number": 781,
+                                "number": 'sdss',
                                 "street": "rua blabla",
                                 "city": "campo mourao",
                                 "state": "pr",
@@ -104,18 +92,6 @@ describe('Purchase Route', () => {
                 "requester": "zanone",
                 "requisitionItems": [
                     {
-                        "siorg": "1",
-                        "description": "blablabla",
-                        "justification": "blablalbalba",
-                        "priceJustification": "blabla",
-                        "qtd": 12,
-                        "quotation": [
-                            {
-                                "requisitionType": "url",
-                                "reference": "blalba",
-                                "price": 12
-                            }
-                        ],
                         "itemSupplier": {
                             "name": "Carlos Alberto",
                             "cnpj": "123456789",
@@ -151,18 +127,6 @@ describe('Purchase Route', () => {
                 "requester": "zanone",
                 "requisitionItems": [
                     {
-                        "siorg": "1",
-                        "description": "blablabla",
-                        "justification": "blablalbalba",
-                        "priceJustification": "blabla",
-                        "qtd": 12,
-                        "quotation": [
-                            {
-                                "requisitionType": "url",
-                                "reference": "blalba",
-                                "price": 12
-                            }
-                        ],
                         "itemSupplier": {
                             "name": "Carlos Alberto",
                             "cnpj": "123456789",
@@ -199,18 +163,6 @@ describe('Purchase Route', () => {
                 "requester": "zanone",
                 "requisitionItems": [
                     {
-                        "siorg": "1",
-                        "description": "blablabla",
-                        "justification": "blablalbalba",
-                        "priceJustification": "blabla",
-                        "qtd": 12,
-                        "quotation": [
-                            {
-                                "requisitionType": "url",
-                                "reference": "blalba",
-                                "price": 12
-                            }
-                        ],
                         "itemSupplier": {
                             "name": "Carlos Alberto",
                             "cnpj": "123456789",
@@ -249,18 +201,6 @@ describe('Purchase Route', () => {
                 "requester": "zanone",
                 "requisitionItems": [
                     {
-                        "siorg": "1",
-                        "description": "blablabla",
-                        "justification": "blablalbalba",
-                        "priceJustification": "blabla",
-                        "qtd": 12,
-                        "quotation": [
-                            {
-                                "requisitionType": "url",
-                                "reference": "blalba",
-                                "price": 12
-                            }
-                        ],
                         "itemSupplier": {
                             "name": "Carlos Alberto",
                             "cnpj": "123456789",
@@ -287,18 +227,6 @@ describe('Purchase Route', () => {
                         "requester": "zanone",
                         "requisitionItems": [
                             {
-                                "siorg": "1",
-                                "description": "blablabla",
-                                "justification": "blablalbalba",
-                                "priceJustification": "blabla",
-                                "qtd": 12,
-                                "quotation": [
-                                    {
-                                        "requisitionType": "url",
-                                        "reference": "blalba",
-                                        "price": 12
-                                    }
-                                ],
                                 "itemSupplier": {
                                     "name": "Carlos Alberto",
                                     "cnpj": "123456789",
@@ -335,18 +263,6 @@ describe('Purchase Route', () => {
                 "requester": "zanone",
                 "requisitionItems": [
                     {
-                        "siorg": "1",
-                        "description": "blablabla",
-                        "justification": "blablalbalba",
-                        "priceJustification": "blabla",
-                        "qtd": 12,
-                        "quotation": [
-                            {
-                                "requisitionType": "url",
-                                "reference": "blalba",
-                                "price": 12
-                            }
-                        ],
                         "itemSupplier": {
                             "name": "Carlos Alberto",
                             "cnpj": "123456789",
