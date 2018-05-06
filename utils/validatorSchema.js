@@ -45,7 +45,10 @@ const PurchaseRequisitionSchema = {
     __v: Joi.any(),
     sector: Joi.string().required(),
     requester: Joi.string().required(),
-    requisitionItems: Joi.array().items(Joi.object().keys(ItemsRequisitionSchema)).required()
+    requisitionItems: Joi.array().items(Joi.object().keys({
+        item: Joi.any(),
+        itemSupplier: Joi.object().keys(SupplierSchema),
+    })).required()
 }
 
 module.exports = {

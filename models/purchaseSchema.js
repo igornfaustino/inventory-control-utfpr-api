@@ -21,20 +21,9 @@ const Purchasechema = mongoose.Schema({
     requisitionDate: String,
     UGR: String,
     sector: String,
-    requester: String,
+    requester: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
     requisitionItems: [{
-        siorg: String,
-        description: { type: String, require: true },
-        justification: { type: String, require: true },
-        quotation: [
-            {
-                requisitionType: { type: String, require: true },
-                reference: String,
-                price: Number
-            }
-        ],
-        priceJustification: String,
-        qtd: { type: Number, require: true },
+        item: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
         itemSupplier: {
             name: String,
             cnpj: String,
@@ -54,7 +43,9 @@ module.exports = mongoose.model('Purchase', Purchasechema);
 const Purchase = mongoose.model('Purchase', Purchasechema);
 
 module.exports.getPurchaseById = function (id, callback) {
-    Purchase.findById(id, callback);
+    Purchase.findById(id).exec((err, purchase) => {
+        Purchase.populate(purchase, 'requisitionItems.item', callback)
+    });
 }
 
 //module.exports.getPurchaseByRequisitionDate = function(requisitionDate, callback) {
@@ -62,7 +53,9 @@ module.exports.getPurchaseById = function (id, callback) {
 //}
 
 module.exports.getAllPurchases = function (callback) {
-    Purchase.find(callback);
+    Purchase.find().exec((err, purchase) => {
+        Purchase.populate(purchase, 'requisitionItems.item', callback)
+    });
 }
 
 module.exports.updatePurchase = function (updatedPurchase, callback) {
@@ -78,7 +71,9 @@ module.exports.deletePurchase = function (purchaseId, callback) {
 }
 
 module.exports.getAllItens = function (purchaseId, callback) {
-    Purchase.findById(purchaseId, 'requisitionItems', callback)
+    Purchase.findById(purchaseId, 'requisitionItems').exec((err, purchase) => {
+        Purchase.populate(purchase, 'requisitionItems.item', callback)
+    });
 }
 
 module.exports.updateSupplier = function (supplier, callback) {
