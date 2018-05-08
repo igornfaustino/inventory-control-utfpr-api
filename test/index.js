@@ -12,7 +12,7 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 //Our parent block
-describe('Books', () => {
+describe('API is working', () => {
 	/*
 	  * Test the /GET route
 	  */

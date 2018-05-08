@@ -1,28 +1,48 @@
 const express = require('express');
-const server = express();
 const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const busboyBodyParser = require('busboy-body-parser');
 const cookieParser = require('cookie-parser');
+const cors = require('cors');
+const Grid = require('gridfs-stream');
+const methodOverride = require('method-override');
+
+const server = express();
 const port = 8080;
+
 const config = require('config'); //we load the db location from the JSON files
 
 // routes
 const index = require('./routes/index');
 const users = require('./routes/users');
 const requisition = require('./routes/requisition');
+const purchase = require('./routes/purchase');
+const files = require('./routes/files');
+
+// --------- db connection ------------
 
 //db options
 const options = {
 	useMongoClient: true
 };
 
-//db connection      
-mongoose.connect(config.DBHost, options, function () {
-	console.log("database connected");
+mongoose.connect(config.DBHost, options);
+const conn = mongoose.connection;
+
+conn.on('connected', function () {
+	console.log('database connected to ' + config.DBHost);
 });
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'connection error:'));
+
+conn.on('error', function (err) {
+	console.log('database connection error: ' + err);
+});
+
+conn.on('disconnected', function () {
+	console.log('database disconnected');
+});
+
+// --------- Middlewares -----------
 
 //don't show the log when it is test
 if (config.util.getEnv('NODE_ENV') !== 'test') {
@@ -37,12 +57,25 @@ server.use(bodyParser.text());
 server.use(bodyParser.json({ type: 'application/json' }));
 server.use(cookieParser());
 
+server.use(methodOverride('_method'));
+server.use(cors());
+
 // use routers
 server.use('/api', index);
 server.use('/api', users);
 server.use('/api', requisition);
+server.use('/api', purchase);
+server.use('/api', files);
+
+//error handler
+
+server.use(function (err, req, res, next) {
+	if (err.isBoom) {
+		return res.status(err.output.statusCode).json(err.output.payload);
+	}
+});
 
 server.listen(port);
 console.log('Listening on port ' + port);
 
-module.exports = server; // for testing
+module.exports = server // for testing
