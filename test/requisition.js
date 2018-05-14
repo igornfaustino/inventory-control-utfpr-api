@@ -88,6 +88,7 @@ describe('Items Requisition Route', () => {
 				"siorg": "12345",
 				"description": "blablabla",
 				"justification": "blabla",
+				"itemType": "consumivel",
 				"quotation": [{
 					"requisitionType": "url",
 					"reference": "www.google.com",
@@ -117,6 +118,7 @@ describe('Items Requisition Route', () => {
 				siorg: "12345",
 				description: "blablabla",
 				justification: "blabla",
+				itemType: "consumivel",
 				quotation: [{
 					requisitionType: "url",
 					reference: "www.google.com",
@@ -136,6 +138,7 @@ describe('Items Requisition Route', () => {
 						res.body.requisition.should.have.property('description');
 						res.body.requisition.should.have.property('justification');
 						res.body.requisition.should.have.property('quotation');
+						res.body.requisition.should.have.property('itemType');
 						res.body.requisition.should.have.property('qtd');
 						done();
 					});

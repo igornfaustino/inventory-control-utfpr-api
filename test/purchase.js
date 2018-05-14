@@ -120,6 +120,7 @@ describe('Purchase Route', () => {
         });
         it('it should POST a Purchase ', (done) => {
             let purchase = {
+                "number": "2018/43",
                 "management": "UTFPR",
                 "requisitionDate": "01-19-2005",
                 "UGR": "1500",
@@ -156,6 +157,7 @@ describe('Purchase Route', () => {
     describe('/GET/:id Purchase', () => {
         it('it should GET a Purchase by the given id', (done) => {
             let purchase = new Purchase({
+                "number":"2018/2",
                 "management": "UTFPR",
                 "requisitionDate": "01-19-2005",
                 "UGR": "1500",
@@ -185,6 +187,8 @@ describe('Purchase Route', () => {
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
+                        res.body.should.have.property('purchase');
+                        res.body.purchase.should.have.property('number').eql('2018/2')
                         done();
                     });
             });

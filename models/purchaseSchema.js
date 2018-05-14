@@ -17,6 +17,7 @@ const mongoose = require('mongoose');
  */
 
 const Purchasechema = mongoose.Schema({
+    number: String,
     management: String,
     requisitionDate: String,
     UGR: String,

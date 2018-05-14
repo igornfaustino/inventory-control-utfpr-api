@@ -21,6 +21,7 @@ const RequisitionSchema = mongoose.Schema({
 			price: Number,
 		}
 	],
+	itemType: String,
 	priceJustification: String,
 	qtd: { type: Number, require: true },
 	date: Date,
