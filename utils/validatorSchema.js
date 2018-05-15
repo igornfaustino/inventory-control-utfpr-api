@@ -53,6 +53,14 @@ const PurchaseRequisitionSchema = {
     })).required()
 };
 
+const EquipmentHitorySchema = {
+    _id: Joi.any(),
+    date: Joi.date().required(),
+    justification: Joi.string().regex(/^[^%<>^$]+$/).required(),
+    locationType: Joi.string().required(),
+    location: Joi.string().required(),
+};
+
 const EquipmentSchema = {
     _id: Joi.any(),
     __v: Joi.any(),
@@ -65,14 +73,6 @@ const EquipmentSchema = {
     quantity: Joi.number().required(),
     equipmentState: Joi.string(),
     locationHistory: Joi.object().keys(EquipmentHitorySchema)
-};
-
-const EquipmentHitorySchema = {
-    _id: Joi.any(),
-    date: Joi.date().required(),
-    justification: Joi.string().regex(/^[^%<>^$]+$/).required(),
-    locationType: Joi.string().required(),
-    location: Joi.string().required(),
 };
 
 module.exports = {
