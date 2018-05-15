@@ -23,7 +23,7 @@ const EquipmentSchema = mongoose.Schema({
     equipmentState: String,
     locationHistory: [
         {
-            date: String, 
+            date: Date, 
             justification: String,
             locationType: String,
             location: String,

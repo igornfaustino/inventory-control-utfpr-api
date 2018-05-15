@@ -51,11 +51,35 @@ const PurchaseRequisitionSchema = {
         item: Joi.any(),
         itemSupplier: Joi.object().keys(SupplierSchema),
     })).required()
-}
+};
+
+const EquipmentSchema = {
+    _id: Joi.any(),
+    __v: Joi.any(),
+    siorg: Joi.string(),
+    buyer: Joi.string().required(),
+    solicitor: Joi.string().required(),
+    description: Joi.string().regex(/^[^%<>^$]+$/).required(),
+    origin: Joi.string(),
+    equipmentType: Joi.string(),
+    quantity: Joi.number().required(),
+    equipmentState: Joi.string(),
+    locationHistory: Joi.object().keys(EquipmentHitorySchema)
+};
+
+const EquipmentHitorySchema = {
+    _id: Joi.any(),
+    date: Joi.date().required(),
+    justification: Joi.string().regex(/^[^%<>^$]+$/).required(),
+    locationType: Joi.string().required(),
+    location: Joi.string().required(),
+};
 
 module.exports = {
     QuotationSchema,
     SupplierSchema,
     ItemsRequisitionSchema,
-    PurchaseRequisitionSchema
+    PurchaseRequisitionSchema,
+    EquipmentSchema,
+    EquipmentHitorySchema
 }
