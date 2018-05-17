@@ -16,7 +16,7 @@ const mongoose = require('mongoose');
  *   about CNPJ, corporate name (razão social), company name, bids on other trades.
  */
 
-const Purchasechema = mongoose.Schema({
+const PurchaseSchema = mongoose.Schema({
     number: String,
     management: String,
     requisitionDate: String,
@@ -29,8 +29,8 @@ const Purchasechema = mongoose.Schema({
     }],
 });
 
-module.exports = mongoose.model('Purchase', Purchasechema);
-const Purchase = mongoose.model('Purchase', Purchasechema);
+module.exports = mongoose.model('Purchase', PurchaseSchema);
+const Purchase = mongoose.model('Purchase', PurchaseSchema);
 
 module.exports.getPurchaseById = function (id, callback) {
     Purchase.findById(id).exec((err, purchase) => {

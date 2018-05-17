@@ -71,7 +71,7 @@ const EquipmentSchema = {
     equipmentType: Joi.string(),
     quantity: Joi.number().required(),
     equipmentState: Joi.string(),
-    locationHistory: Joi.object().keys(EquipmentHitorySchema)
+    locationHistory: Joi.array().items(Joi.any())
 };
 
 module.exports = {

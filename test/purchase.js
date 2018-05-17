@@ -19,7 +19,7 @@ describe('Purchase Route', () => {
     describe('/GET Purchase', () => {
         it('it should GET all the purchase', (done) => {
             chai.request(server)
-                .get('/api/Purchase')
+                .get('/api/purchase')
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');

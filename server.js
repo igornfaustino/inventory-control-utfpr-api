@@ -19,6 +19,7 @@ const users = require('./routes/users');
 const requisition = require('./routes/requisition');
 const purchase = require('./routes/purchase');
 const files = require('./routes/files');
+const equipments = require('./routes/equipments');
 
 // --------- db connection ------------
 
@@ -66,6 +67,7 @@ server.use('/api', users);
 server.use('/api', requisition);
 server.use('/api', purchase);
 server.use('/api', files);
+server.use('/api', equipments);
 
 //error handler
 

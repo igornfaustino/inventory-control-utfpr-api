@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const LocationHistory = require('./locationHistorySchema')
 
 /**
  * Equipment Schema models It's Equipments and Location Backtracking: 
@@ -21,25 +22,18 @@ const EquipmentSchema = mongoose.Schema({
     equipmentType: String,
     quantity: Number,
     equipmentState: String,
-    locationHistory: [
-        {
-            date: Date, 
-            justification: String,
-            locationType: String,
-            location: String,
-        },
-    ]
+    locationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LocationHistory' }]
 });
 
 module.exports = mongoose.model('Equipment', EquipmentSchema);
 const Equipment = mongoose.model('Equipment', EquipmentSchema);
 
 module.exports.getEquipmentById = function (id, callback) {
-    Equipment.findById(id, callback);
+    Equipment.findById(id).populate('locationHistory').exec(callback);
 }
 
 module.exports.getAllEquipments = function (callback) {
-    Equipment.find(callback);
+    Equipment.find().populate('locationHistory').exec(callback);
 }
 
 module.exports.updateEquipment = function (updateEquipment, callback) {
@@ -52,12 +46,4 @@ module.exports.addNewEquipment = function (newEquipment, callback) {
 
 module.exports.deleteEquipment = function (equipmentId, callback) {
     Equipment.findById(equipmentId).remove(callback);
-}
-
-module.exports.getHistory = function (equipmentId, callback) {
-    Equipment.findById(equipmentId, 'locationHistory', callback)
-}
-
-module.exports.updateHistory = function (history, callback) {
-    Equipment.update({ '_id': history._id }, history, callback);
 }
