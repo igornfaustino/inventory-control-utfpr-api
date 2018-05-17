@@ -32,7 +32,6 @@ const ItemsRequisitionSchema = {
     priceJustification: Joi.string().regex(/^[^%<>^$]+$/),
     qtd: Joi.number().required(),
     quotation: Joi.array().items(Joi.object().keys(QuotationSchema)),
-    itemSupplier: Joi.object().keys(SupplierSchema),
     date: Joi.date(),
     status: Joi.string()
 };
@@ -49,7 +48,7 @@ const PurchaseRequisitionSchema = {
     requester: Joi.string().required(),
     requisitionItems: Joi.array().items(Joi.object().keys({
         item: Joi.any(),
-        itemSupplier: Joi.object().keys(SupplierSchema),
+        itemSupplier: Joi.any(),
     })).required()
 };
 

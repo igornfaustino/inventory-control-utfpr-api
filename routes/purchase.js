@@ -8,10 +8,6 @@ const BodyValidation = {
     body: PurchaseRequisitionSchema
 }
 
-const BodyValidationSupplier = {
-    body: SupplierSchema
-}
-
 /**
  * GET /api/purchase/
  * return all purchases
@@ -54,20 +50,6 @@ router.get('/purchase/items/:id', function (req, res) {
 });
 
 /**
- * GET /api/purchase/item/:id
- * use id to return all itens from a single purchase
- */
-router.get('/purchase/item/:id', function (req, res) {
-    const id = req.params.id;
-    Purchase.getItem(id, function (err, item) {
-        if (err) {
-            res.status(400).send(err);
-        }
-        res.json({ success: true, item: item[0] });
-    });
-});
-
-/**
  * POST /api/purchase/
  */
 router.post('/purchase/', expressJoi(BodyValidation), function (req, res) {
@@ -82,20 +64,6 @@ router.post('/purchase/', expressJoi(BodyValidation), function (req, res) {
         }
     });
 })
-
-/**
- * UPDATE /api/purchase/supplier/:id
- */
-router.put('/purchase/supplier/', expressJoi(BodyValidationSupplier), function (req, res) {
-    updatedSupplier = req.body;
-    Purchase.updateSupplier(updatedSupplier, function (err, supplier) {
-        if (err) {
-            res.json({ success: false, msg: 'Failed to update supplier' });
-        } else {
-            res.json({ success: true, msg: 'supplier updated', supplier: supplier });
-        }
-    });
-});
 
 /**
  * UPDATE /api/purchase/

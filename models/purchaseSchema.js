@@ -25,18 +25,7 @@ const Purchasechema = mongoose.Schema({
     requester: String,
     requisitionItems: [{
         item: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
-        itemSupplier: {
-            name: String,
-            cnpj: String,
-            phone: String,
-            address: {
-                number: Number,
-                street: String,
-                city: String,
-                state: String,
-                country: String,
-            }
-        },
+        itemSupplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
     }],
 });
 
@@ -45,7 +34,7 @@ const Purchase = mongoose.model('Purchase', Purchasechema);
 
 module.exports.getPurchaseById = function (id, callback) {
     Purchase.findById(id).exec((err, purchase) => {
-        Purchase.populate(purchase, 'requisitionItems.item', callback)
+        purchase.populate('requisitionItems.item').populate('requisitionItems.itemSupplier', callback)
     });
 }
 
@@ -55,7 +44,7 @@ module.exports.getPurchaseById = function (id, callback) {
 
 module.exports.getAllPurchases = function (callback) {
     Purchase.find().exec((err, purchase) => {
-        Purchase.populate(purchase, 'requisitionItems.item', callback)
+        Purchase.populate(purchase, 'requisitionItems.item requisitionItems.itemSupplier', callback)
     });
 }
 

@@ -36,7 +36,7 @@ describe('Purchase Route', () => {
                 "requisitionDate": "01-19-2005",
                 "UGR": "1500",
                 "sector": "dacom",
-                "requester": "zanone",
+                "requester": "zanone"
             }
             chai.request(server)
                 .post('/api/purchase')
@@ -48,29 +48,14 @@ describe('Purchase Route', () => {
                     done();
                 });
         });
-        it('it should not accept a Purchase with string in the number', (done) => {
+        it('it should not accept a Purchase with number in sector', (done) => {
             let purchase = {
                 "management": "UTFPR",
                 "requisitionDate": "01-19-2005",
                 "UGR": "1500",
-                "sector": "dacom",
+                "sector": 123123,
                 "requester": "zanone",
-                "requisitionItems": [
-                    {
-                        "itemSupplier": {
-                            "name": "Carlos Alberto",
-                            "cnpj": "123456789",
-                            "phone": "15996954572",
-                            "address": {
-                                "number": 'sdss',
-                                "street": "rua blabla",
-                                "city": "campo mourao",
-                                "state": "pr",
-                                "country": "Brasil"
-                            }
-                        }
-                    }
-                ]
+                "requisitionItems": []
             }
             chai.request(server)
                 .post('/api/purchase')
@@ -90,22 +75,7 @@ describe('Purchase Route', () => {
                 "sector": "dacom",
                 "newFiels": "test",
                 "requester": "zanone",
-                "requisitionItems": [
-                    {
-                        "itemSupplier": {
-                            "name": "Carlos Alberto",
-                            "cnpj": "123456789",
-                            "phone": "15996954572",
-                            "address": {
-                                "number": 781,
-                                "street": "rua blabla",
-                                "city": "campo mourao",
-                                "state": "pr",
-                                "country": "Brasil"
-                            }
-                        }
-                    }
-                ]
+                "requisitionItems": []
             }
 
             chai.request(server)
@@ -126,22 +96,7 @@ describe('Purchase Route', () => {
                 "UGR": "1500",
                 "sector": "dacom",
                 "requester": "zanone",
-                "requisitionItems": [
-                    {
-                        "itemSupplier": {
-                            "name": "Carlos Alberto",
-                            "cnpj": "123456789",
-                            "phone": "15996954572",
-                            "address": {
-                                "number": 781,
-                                "street": "rua blabla",
-                                "city": "campo mourao",
-                                "state": "pr",
-                                "country": "Brasil"
-                            }
-                        }
-                    }
-                ]
+                "requisitionItems": []
             }
             chai.request(server)
                 .post('/api/purchase')
@@ -163,22 +118,7 @@ describe('Purchase Route', () => {
                 "UGR": "1500",
                 "sector": "dacom",
                 "requester": "zanone",
-                "requisitionItems": [
-                    {
-                        "itemSupplier": {
-                            "name": "Carlos Alberto",
-                            "cnpj": "123456789",
-                            "phone": "15996954572",
-                            "address": {
-                                "number": 781,
-                                "street": "rua blabla",
-                                "city": "campo mourao",
-                                "state": "pr",
-                                "country": "Brasil"
-                            }
-                        }
-                    }
-                ]
+                "requisitionItems": []
             });
             purchase.save((err, purchase) => {
                 chai.request(server)
@@ -203,22 +143,7 @@ describe('Purchase Route', () => {
                 "UGR": "1500",
                 "sector": "dacom",
                 "requester": "zanone",
-                "requisitionItems": [
-                    {
-                        "itemSupplier": {
-                            "name": "Carlos Alberto",
-                            "cnpj": "123456789",
-                            "phone": "15996954572",
-                            "address": {
-                                "number": 781,
-                                "street": "rua blabla",
-                                "city": "campo mourao",
-                                "state": "pr",
-                                "country": "Brasil"
-                            }
-                        }
-                    }
-                ]
+                "requisitionItems": []
             });
             purchase.save((err, purchase) => {
                 chai.request(server)
@@ -229,22 +154,7 @@ describe('Purchase Route', () => {
                         "UGR": "1500",
                         "sector": "dacom Updated",
                         "requester": "zanone",
-                        "requisitionItems": [
-                            {
-                                "itemSupplier": {
-                                    "name": "Carlos Alberto",
-                                    "cnpj": "123456789",
-                                    "phone": "15996954572",
-                                    "address": {
-                                        "number": 781,
-                                        "street": "rua blabla",
-                                        "city": "campo mourao",
-                                        "state": "pr",
-                                        "country": "Brasil"
-                                    }
-                                }
-                            }
-                        ]
+                        "requisitionItems": []
                     })
                     .end((err, res) => {
                         res.should.have.status(200);
@@ -265,22 +175,7 @@ describe('Purchase Route', () => {
                 "UGR": "1500",
                 "sector": "dacom",
                 "requester": "zanone",
-                "requisitionItems": [
-                    {
-                        "itemSupplier": {
-                            "name": "Carlos Alberto",
-                            "cnpj": "123456789",
-                            "phone": "15996954572",
-                            "address": {
-                                "number": 781,
-                                "street": "rua blabla",
-                                "city": "campo mourao",
-                                "state": "pr",
-                                "country": "Brasil"
-                            }
-                        }
-                    }
-                ]
+                "requisitionItems": []
             });
             purchase.save((err, purchase) => {
                 chai.request(server)
