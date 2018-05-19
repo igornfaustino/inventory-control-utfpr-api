@@ -47,3 +47,19 @@ module.exports.addNewEquipment = function (newEquipment, callback) {
 module.exports.deleteEquipment = function (equipmentId, callback) {
     Equipment.findById(equipmentId).remove(callback);
 }
+
+module.exports.moveEquipment = function (equipmentId, newLocation, callback) {
+    LocationHistory.addNewLocation(newLocation, (err, location) => {
+        if (location) {
+            Equipment.getEquipmentById(equipmentId, (err, equipment) => {
+                console.log(equipmentId)
+                if (equipment) {
+                    equipment.locationHistory.unshift(location._id)
+                    equipment.save(callback)
+                }
+            })
+        } else {
+            callback(err, null)
+        }
+    })
+}

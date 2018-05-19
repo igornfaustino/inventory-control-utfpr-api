@@ -2,10 +2,15 @@ const express = require('express');
 const router = express.Router();
 const Equipments = require('../models/equipmentSchema');
 const expressJoi = require('express-joi-validator');
-const { EquipmentSchema } = require('../utils/validatorSchema');
+const moment = require('moment')
+const { EquipmentSchema, EquipmentHitorySchema } = require('../utils/validatorSchema');
 
 const BodyValidation = {
     body: EquipmentSchema
+}
+
+const BodyValidationHistory = {
+    body: EquipmentHitorySchema
 }
 
 /**
@@ -79,6 +84,20 @@ router.delete('/equipment/:id', function (req, res) {
             res.json({ success: true, msg: 'Equipment deleted', equipment: equipment })
         }
     })
+});
+
+router.post('/equipments/:id/move', expressJoi(BodyValidationHistory), function (req, res) {
+    let newLocation = req.body;
+    let equipmentId = req.params.id;
+    console.log(equipmentId)
+    newLocation.date = moment().format()
+    Equipments.moveEquipment(equipmentId, newLocation, function (err, equipment) {
+        if (err) {
+            res.json({ success: false, msg: 'Failed to update equipment' });
+        } else {
+            res.json({ success: true, msg: 'equipment updated', result: equipment });
+        }
+    });
 });
 
 module.exports = router;

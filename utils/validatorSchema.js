@@ -54,7 +54,6 @@ const PurchaseRequisitionSchema = {
 
 const EquipmentHitorySchema = {
     _id: Joi.any(),
-    date: Joi.date().required(),
     justification: Joi.string().regex(/^[^%<>^$]+$/).required(),
     locationType: Joi.string().required(),
     location: Joi.string().required(),
