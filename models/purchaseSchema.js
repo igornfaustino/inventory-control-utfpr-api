@@ -25,7 +25,7 @@ const PurchaseSchema = mongoose.Schema({
     requester: String,
     requisitionItems: [{
         item: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
-        itemSupplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
+        itemSupplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' },
     }],
 });
 
@@ -37,10 +37,6 @@ module.exports.getPurchaseById = function (id, callback) {
         purchase.populate('requisitionItems.item').populate('requisitionItems.itemSupplier', callback)
     });
 }
-
-//module.exports.getPurchaseByRequisitionDate = function(requisitionDate, callback) {
-//   Purchase.find(callback);
-//}
 
 module.exports.getAllPurchases = function (callback) {
     Purchase.find().exec((err, purchase) => {
@@ -64,17 +60,4 @@ module.exports.getAllItens = function (purchaseId, callback) {
     Purchase.findById(purchaseId, 'requisitionItems').exec((err, purchase) => {
         Purchase.populate(purchase, 'requisitionItems.item', callback)
     });
-}
-
-module.exports.updateSupplier = function (supplier, callback) {
-    Purchase.updateMany({
-        'requisitionItems.itemSupplier.cnpj': supplier.cnpj
-    },
-        {
-            $set:
-                {
-                    'requisitionItems.$.itemSupplier': supplier
-                }
-
-        }, callback);
 }
