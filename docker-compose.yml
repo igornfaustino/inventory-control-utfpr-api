@@ -1,0 +1,14 @@
+mongo:  
+  image: mongo:3.0.4  
+
+back-end:  
+  build: .
+  ports:  
+   - "8080:8080"
+  volumes:  
+   - .:/usr/src/app
+  command: bash -c "npm install; npm run dev" 
+  environment:
+   - NODE_ENV=docker
+  links:  
+   - mongo  
