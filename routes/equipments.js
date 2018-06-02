@@ -1,17 +1,14 @@
 const express = require('express');
 const router = express.Router();
 const Equipments = require('../models/equipmentSchema');
-const expressJoi = require('express-joi-validator');
+const Joi = require('joi');
+const validator = require('express-joi-validation')({});
 const moment = require('moment')
 const { EquipmentSchema, EquipmentHitorySchema } = require('../utils/validatorSchema');
 
-const BodyValidation = {
-    body: EquipmentSchema
-}
+const BodyValidation = Joi.object(EquipmentSchema);
 
-const BodyValidationHistory = {
-    body: EquipmentHitorySchema
-}
+const BodyValidationHistory = Joi.object(EquipmentHitorySchema);
 
 /**
  * GET /api/equipments/
@@ -44,7 +41,7 @@ router.get('/equipment/:id', function (req, res) {
 /**
  * POST /api/equipment/
  */
-router.post('/equipment/', expressJoi(BodyValidation), function (req, res) {
+router.post('/equipment/', validator.body(BodyValidation), function (req, res) {
 
     let newEquipment = req.body
     Equipments.addNewEquipment(newEquipment, function (err, equipment) {
@@ -60,7 +57,7 @@ router.post('/equipment/', expressJoi(BodyValidation), function (req, res) {
 /**
  * UPDATE /api/equipment/
  */
-router.put('/equipment/:id', expressJoi(BodyValidation), function (req, res) {
+router.put('/equipment/:id', validator.body(BodyValidation), function (req, res) {
     let updatedEquipment = req.body
     updatedEquipment._id = req.params.id
     Equipments.updateEquipment(updatedEquipment, function (err, equipment) {
@@ -86,7 +83,7 @@ router.delete('/equipment/:id', function (req, res) {
     })
 });
 
-router.post('/equipments/:id/move', expressJoi(BodyValidationHistory), function (req, res) {
+router.post('/equipments/:id/move', validator.body(BodyValidationHistory), function (req, res) {
     let newLocation = req.body;
     let equipmentId = req.params.id;
     console.log(equipmentId)

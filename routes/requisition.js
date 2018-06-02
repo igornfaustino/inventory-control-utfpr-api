@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Requisition = require('../models/requisitionSchema');
-const expressJoi = require('express-joi-validator');
+const Joi = require('joi');
+const validator = require('express-joi-validation')({});
 const { ItemsRequisitionSchema } = require('../utils/validatorSchema');
 const moment = require('moment');
 
-const BodyValidation = {
-	body: ItemsRequisitionSchema
-}
+const BodyValidation = Joi.object(ItemsRequisitionSchema);
 
 moment().locale('pt-br');
 
@@ -54,7 +53,7 @@ router.get('/requisitions/', function (req, res) {
  *		"qtd": 3
  * }
  */
-router.post('/requisition/', expressJoi(BodyValidation), function (req, res) {
+router.post('/requisition/', validator.body(BodyValidation), function (req, res) {
 	let newRequisition = req.body
 	if (!req.body.date) {
 		newRequisition.date = moment().format('L')
@@ -75,7 +74,7 @@ router.post('/requisition/', expressJoi(BodyValidation), function (req, res) {
  * PUT /api/requisition
  * body
  */
-router.put('/requisition/:id', expressJoi(BodyValidation), function (req, res, next) {
+router.put('/requisition/:id', validator.body(BodyValidation), function (req, res, next) {
 	let updatedRequisition = req.body;
 	updatedRequisition._id = req.params.id;
 

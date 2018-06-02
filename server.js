@@ -72,7 +72,6 @@ server.use('/api', equipments);
 server.use('/api', supplier);
 
 //error handler
-
 server.use(function (err, req, res, next) {
 	if (err.isBoom) {
 		return res.status(err.output.statusCode).json(err.output.payload);

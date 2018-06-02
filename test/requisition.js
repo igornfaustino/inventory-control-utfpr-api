@@ -40,8 +40,6 @@ describe('Items Requisition Route', () => {
 				.send(requisition)
 				.end((err, res) => {
 					res.should.have.status(400);
-					res.body.should.be.a('object');
-					res.body.should.have.property('error');
 					done();
 				});
 		});
@@ -55,8 +53,6 @@ describe('Items Requisition Route', () => {
 				.send(requisition)
 				.end((err, res) => {
 					res.should.have.status(400);
-					res.body.should.be.a('object');
-					res.body.should.have.property('error');
 					done();
 				});
 		});
@@ -78,8 +74,6 @@ describe('Items Requisition Route', () => {
 				.send(requisition)
 				.end((err, res) => {
 					res.should.have.status(400);
-					res.body.should.be.a('object');
-					res.body.should.have.property('error');
 					done();
 				});
 		});

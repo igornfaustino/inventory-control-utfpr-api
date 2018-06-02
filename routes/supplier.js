@@ -1,13 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const Supplier = require('../models/supplierSchema');
-const expressJoi = require('express-joi-validator');
+const Joi = require('joi');
+const validator = require('express-joi-validation')({});
 const moment = require('moment')
 const { SupplierSchema } = require('../utils/validatorSchema');
 
-const BodyValidation = {
-    body: SupplierSchema
-}
+const BodyValidation = Joi.object(SupplierSchema);
 
 /**
  * GET /api/suppliers/
@@ -40,7 +39,7 @@ router.get('/supplier/:id', function (req, res) {
 /**
  * POST /api/supplier/
  */
-router.post('/supplier/', expressJoi(BodyValidation), function (req, res) {
+router.post('/supplier/', validator.body(BodyValidation), function (req, res) {
 
     let newSupplier = req.body
     Supplier.addNewSupplier(newSupplier, function (err, supplier) {
@@ -56,7 +55,7 @@ router.post('/supplier/', expressJoi(BodyValidation), function (req, res) {
 /**
  * UPDATE /api/supplier/
  */
-router.put('/supplier/:id', expressJoi(BodyValidation), function (req, res) {
+router.put('/supplier/:id', validator.body(BodyValidation), function (req, res) {
     let updatedSupplier = req.body
     updatedSupplier._id = req.params.id
     Supplier.updateSupplier(updatedSupplier, function (err, result) {

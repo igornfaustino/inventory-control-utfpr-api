@@ -1,12 +1,11 @@
 const express = require('express');
 const router = express.Router();
 const Purchase = require('../models/purchaseSchema');
-const expressJoi = require('express-joi-validator');
+const Joi = require('joi');
+const validator = require('express-joi-validation')({});
 const { PriceSchema, SupplierSchema, ItemsRequisitionSchema, PurchaseRequisitionSchema } = require('../utils/validatorSchema');
 
-const BodyValidation = {
-    body: PurchaseRequisitionSchema
-}
+const BodyValidation = Joi.object(PurchaseRequisitionSchema);
 
 /**
  * GET /api/purchase/
@@ -52,7 +51,7 @@ router.get('/purchase/items/:id', function (req, res) {
 /**
  * POST /api/purchase/
  */
-router.post('/purchase/', expressJoi(BodyValidation), function (req, res) {
+router.post('/purchase/', validator.body(BodyValidation), function (req, res) {
 
     let newPurchase = req.body
     Purchase.addNewPurchase(newPurchase, function (err, purchase) {
@@ -68,7 +67,7 @@ router.post('/purchase/', expressJoi(BodyValidation), function (req, res) {
 /**
  * UPDATE /api/purchase/
  */
-router.put('/purchase/:id', expressJoi(BodyValidation), function (req, res) {
+router.put('/purchase/:id', validator.body(BodyValidation), function (req, res) {
     let updatedPurchase = req.body
     updatedPurchase.id = req.params.id
     Purchase.updatePurchase(updatedPurchase, function (err, purchase) {

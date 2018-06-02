@@ -47,8 +47,6 @@ describe('Equipents Route', () => {
                 .send(supplier)
                 .end((err, res) => {
                     res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error');
                     done();
                 });
         });
@@ -70,8 +68,6 @@ describe('Equipents Route', () => {
                 .send(supplier)
                 .end((err, res) => {
                     res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error');
                     done();
                 });
         });
@@ -95,8 +91,6 @@ describe('Equipents Route', () => {
                 .send(supplier)
                 .end((err, res) => {
                     res.should.have.status(400);
-                    res.body.should.be.a('object');
-                    res.body.should.have.property('error');
                     done();
                 });
         });
