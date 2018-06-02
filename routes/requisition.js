@@ -19,9 +19,10 @@ router.get('/requisition/:id', function (req, res) {
 	const id = req.params.id;
 	Requisition.getRequisitionById(id, function (err, requisition) {
 		if (err) {
-			res.status(400).send(err);
+			return res.status(400).send(err);
+		} else {
+			res.json({ success: true, requisition: requisition });
 		}
-		res.json({ success: true, requisition: requisition });
 	});
 });
 
@@ -33,8 +34,9 @@ router.get('/requisitions/', function (req, res) {
 	Requisition.getAllRequisition(function (err, requisitions) {
 		if (err) {
 			res.status(400).send(err);
+		} else {
+			res.json({ success: true, requisitions: requisitions });
 		}
-		res.json({ success: true, requisitions: requisitions });
 	});
 });
 

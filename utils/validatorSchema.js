@@ -33,7 +33,8 @@ const ItemsRequisitionSchema = {
     qtd: Joi.number().required(),
     quotation: Joi.array().items(Joi.object().keys(QuotationSchema)),
     date: Joi.date(),
-    status: Joi.string()
+    status: Joi.string(),
+    changeJustification: Joi.string()
 };
 
 

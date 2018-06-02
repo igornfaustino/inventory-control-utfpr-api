@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const moment = require('moment');
+const RequisitionHistory = require('./requisitionHistorySchema');
 // const Schema = mongoose.Schema;
 
 /**
@@ -25,7 +27,8 @@ const RequisitionSchema = mongoose.Schema({
 	priceJustification: String,
 	qtd: { type: Number, require: true },
 	date: Date,
-	status: String
+	status: String,
+	history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'RequisitionHistory' }]
 	// requesterId: { type: String, require: true }
 });
 
@@ -38,35 +41,65 @@ const Requisition = mongoose.model('Requisition', RequisitionSchema);
  * @param {function(err, requisition)} callback callback function
  */
 module.exports.getRequisitionById = function (id, callback) {
-	Requisition.findById(id, callback);
+	Requisition.findById(id).populate('history').exec(callback);
 };
 
-module.exports.getAllRequisition = function (callback){
-	Requisition.find(callback);
+module.exports.getAllRequisition = function (callback) {
+	Requisition.find().populate('history').exec(callback);
 };
 
-module.exports.addNewRequisition = function (newRequisition, callback){
-	Requisition.create(newRequisition, callback);
-}
-
-// update requisition
-module.exports.updateRequisition = function (updatedRequisition, callback){
-	this.getRequisitionById(updatedRequisition._id, function (err, requisition) {
-		if (err) throw err;
-		if (requisition) {
-			requisition.siorg = updatedRequisition.siorg;
-			requisition.description = updatedRequisition.description;
-			requisition.justification = updatedRequisition.justification;
-			requisition.quotation = updatedRequisition.quotation;
-			requisition.priceJustification = updatedRequisition.priceJustification;
-			requisition.qtd = updatedRequisition.qtd;
-			requisition.status = updatedRequisition.status;
-			requisition.save(callback);
+module.exports.addNewRequisition = function (newRequisition, callback) {
+	// saves the creation on history
+	newRequisition.date = moment();
+	newRequisition.changeJustification = "Criação da requisição"
+	RequisitionHistory.addNewHistory(newRequisition, (err, history) => {
+		// console.log(history)
+		if (history) {
+			delete newRequisition.date;
+			delete newRequisition.changeJustification;
+			Requisition.create(newRequisition, (err, requisition) => {
+				requisition.history.unshift(history._id);
+				requisition.save(callback);
+			});
 		}
 	})
 }
 
+// update requisition
+module.exports.updateRequisition = function (updatedRequisition, callback) {
+	let requisitionHistory = {}
+	requisitionHistory.siorg = updatedRequisition.siorg;
+	requisitionHistory.description = updatedRequisition.description;
+	requisitionHistory.justification = updatedRequisition.justification;
+	requisitionHistory.quotation = updatedRequisition.quotation;
+	requisitionHistory.priceJustification = updatedRequisition.priceJustification;
+	requisitionHistory.qtd = updatedRequisition.qtd;
+	requisitionHistory.status = updatedRequisition.status;
+	requisitionHistory.date = moment();
+	requisitionHistory.changeJustification = updatedRequisition.changeJustification;
+
+	this.getRequisitionById(updatedRequisition._id, function (err, requisition) {
+		if (err) throw err;
+		if (requisition) {
+			RequisitionHistory.addNewHistory(requisitionHistory, (err, history) => {
+				// console.log(err)
+				if (history && history._id) {
+					requisition.siorg = updatedRequisition.siorg;
+					requisition.description = updatedRequisition.description;
+					requisition.justification = updatedRequisition.justification;
+					requisition.quotation = updatedRequisition.quotation;
+					requisition.priceJustification = updatedRequisition.priceJustification;
+					requisition.qtd = updatedRequisition.qtd;
+					requisition.status = updatedRequisition.status;
+					requisition.history.unshift(history._id);
+					requisition.save(callback);
+				}
+			});
+		}
+	});
+}
+
 // delete requisition
-module.exports.deleteRequisition = function (id, callback){
+module.exports.deleteRequisition = function (id, callback) {
 	Requisition.findById(id).remove(callback);
 }
