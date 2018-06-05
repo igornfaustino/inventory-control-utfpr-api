@@ -75,6 +75,7 @@ module.exports.updateRequisition = function (updatedRequisition, callback) {
 	requisitionHistory.priceJustification = updatedRequisition.priceJustification;
 	requisitionHistory.qtd = updatedRequisition.qtd;
 	requisitionHistory.status = updatedRequisition.status;
+	requisitionHistory.itemType = updatedRequisition.itemType;
 	requisitionHistory.date = moment();
 	requisitionHistory.changeJustification = updatedRequisition.changeJustification;
 
@@ -91,6 +92,7 @@ module.exports.updateRequisition = function (updatedRequisition, callback) {
 					requisition.priceJustification = updatedRequisition.priceJustification;
 					requisition.qtd = updatedRequisition.qtd;
 					requisition.status = updatedRequisition.status;
+					requisition.itemType = updatedRequisition.itemType;
 					requisition.history.unshift(history._id);
 					requisition.save(callback);
 				}
