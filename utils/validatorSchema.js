@@ -58,6 +58,8 @@ const EquipmentHitorySchema = {
     justification: Joi.string().regex(/^[^%<>^$]+$/).required(),
     locationType: Joi.string().required(),
     location: Joi.string().required(),
+    date: Joi.any(),
+    __v: Joi.any(),
 };
 
 const EquipmentSchema = {
