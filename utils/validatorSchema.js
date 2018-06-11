@@ -24,7 +24,7 @@ const SupplierSchema = {
 
 const ItemsRequisitionSchema = {
     _id: Joi.any(),
-    siorg: Joi.string(),
+    siorg: Joi.string().allow('').optional(),
     itemType: Joi.string(),
     __v: Joi.any(),
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),
