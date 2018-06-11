@@ -66,6 +66,7 @@ const EquipmentSchema = {
     _id: Joi.any(),
     __v: Joi.any(),
     siorg: Joi.string(),
+    patrimonyNumber: Joi.string(),
     buyer: Joi.string().required(),
     solicitor: Joi.string().required(),
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),

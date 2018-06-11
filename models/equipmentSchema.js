@@ -15,6 +15,7 @@ const LocationHistory = require('./locationHistorySchema')
  */
 const EquipmentSchema = mongoose.Schema({
     siorg: String,
+    patrimonyNumber: String,
     buyer: String,
     solicitor: String,
     description: String,
