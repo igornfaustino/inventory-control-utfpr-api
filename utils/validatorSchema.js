@@ -72,10 +72,17 @@ const EquipmentSchema = {
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),
     origin: Joi.string(),
     equipmentType: Joi.string(),
-    quantity: Joi.number().required(),
     equipmentState: Joi.string(),
     locationHistory: Joi.array().items(Joi.any())
 };
+
+const StatusSchema = {
+    status: Joi.string()
+}
+
+const TypeSchema = {
+    type: Joi.string()
+}
 
 module.exports = {
     QuotationSchema,
@@ -83,5 +90,7 @@ module.exports = {
     ItemsRequisitionSchema,
     PurchaseRequisitionSchema,
     EquipmentSchema,
-    EquipmentHitorySchema
+    EquipmentHitorySchema,
+    StatusSchema,
+    TypeSchema
 }

@@ -21,6 +21,7 @@ const purchase = require('./routes/purchase');
 const files = require('./routes/files');
 const equipments = require('./routes/equipments');
 const supplier = require('./routes/supplier');
+const configuration = require('./routes/configuration');
 
 // --------- db connection ------------
 
@@ -70,6 +71,7 @@ server.use('/api', purchase);
 server.use('/api', files);
 server.use('/api', equipments);
 server.use('/api', supplier);
+server.use('/api', configuration);
 
 //error handler
 server.use(function (err, req, res, next) {
