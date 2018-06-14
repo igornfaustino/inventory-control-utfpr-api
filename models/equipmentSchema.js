@@ -41,7 +41,7 @@ module.exports.updateEquipment = function (updateEquipment, callback) {
     Equipment.findOneAndUpdate({ '_id': updateEquipment._id }, {
         "$set": {
             "siorg": updateEquipment.siorg,
-            "patrimonyNumber": updateEquipment.patrimonyNumber,
+            // "patrimonyNumber": updateEquipment.patrimonyNumber,
             "buyer": updateEquipment.buyer,
             "solicitor": updateEquipment.solicitor,
             "description": updateEquipment.description,
