@@ -53,15 +53,18 @@ module.exports.addNewRequisition = function (newRequisition, callback) {
 	newRequisition.date = moment();
 	newRequisition.changeJustification = "Criação da requisição"
 	RequisitionHistory.addNewHistory(newRequisition, (err, history) => {
-		// console.log(history)
-		if (history) {
-			delete newRequisition.date;
-			delete newRequisition.changeJustification;
-			Requisition.create(newRequisition, (err, requisition) => {
-				requisition.history.unshift(history._id);
-				requisition.save(callback);
-			});
+		if (err) {
+			return callback(true, null)
 		}
+		delete newRequisition.date;
+		delete newRequisition.changeJustification;
+		Requisition.create(newRequisition, (err, requisition) => {
+			if (err) {
+				return callback(true, null)
+			}
+			requisition.history.unshift(history._id);
+			requisition.save(callback);
+		});
 	})
 }
 
@@ -80,24 +83,26 @@ module.exports.updateRequisition = function (updatedRequisition, callback) {
 	requisitionHistory.changeJustification = updatedRequisition.changeJustification;
 
 	this.getRequisitionById(updatedRequisition._id, function (err, requisition) {
-		if (err) throw err;
-		if (requisition) {
-			RequisitionHistory.addNewHistory(requisitionHistory, (err, history) => {
-				// console.log(err)
-				if (history && history._id) {
-					requisition.siorg = updatedRequisition.siorg;
-					requisition.description = updatedRequisition.description;
-					requisition.justification = updatedRequisition.justification;
-					requisition.quotation = updatedRequisition.quotation;
-					requisition.priceJustification = updatedRequisition.priceJustification;
-					requisition.qtd = updatedRequisition.qtd;
-					requisition.status = updatedRequisition.status;
-					requisition.itemType = updatedRequisition.itemType;
-					requisition.history.unshift(history._id);
-					requisition.save(callback);
-				}
-			});
+		if (err) {
+			return callback(true, null)
 		}
+		RequisitionHistory.addNewHistory(requisitionHistory, (err, history) => {
+			if (err) {
+				return callback(true, null)
+			}
+			if (history && history._id) {
+				requisition.siorg = updatedRequisition.siorg;
+				requisition.description = updatedRequisition.description;
+				requisition.justification = updatedRequisition.justification;
+				requisition.quotation = updatedRequisition.quotation;
+				requisition.priceJustification = updatedRequisition.priceJustification;
+				requisition.qtd = updatedRequisition.qtd;
+				requisition.status = updatedRequisition.status;
+				requisition.itemType = updatedRequisition.itemType;
+				requisition.history.unshift(history._id);
+				requisition.save(callback);
+			}
+		});
 	});
 }
 
