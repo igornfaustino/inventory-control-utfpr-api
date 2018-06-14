@@ -164,7 +164,6 @@ describe('Equipents Route', () => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
                         res.body.should.have.property('result');
-                        res.body.result.should.have.property('nModified').eql(1)
                         done();
                     });
             });

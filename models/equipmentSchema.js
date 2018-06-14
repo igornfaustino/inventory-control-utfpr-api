@@ -38,7 +38,18 @@ module.exports.getAllEquipments = function (callback) {
 }
 
 module.exports.updateEquipment = function (updateEquipment, callback) {
-    Equipment.update({ '_id': updateEquipment._id }, updateEquipment, callback);
+    Equipment.findOneAndUpdate({ '_id': updateEquipment._id }, {
+        "$set": {
+            "siorg": updateEquipment.siorg,
+            "patrimonyNumber": updateEquipment.patrimonyNumber,
+            "buyer": updateEquipment.buyer,
+            "solicitor": updateEquipment.solicitor,
+            "description": updateEquipment.description,
+            "origin": updateEquipment.origin,
+            "equipmentState": updateEquipment.equipmentState,
+            "equipmentType": updateEquipment.equipmentType,
+        }
+    }).exec(callback);
 }
 
 module.exports.addNewEquipment = function (newEquipment, callback) {
