@@ -52,7 +52,6 @@ router.get('/purchase/items/:id', function (req, res) {
  * POST /api/purchase/
  */
 router.post('/purchase/', validator.body(BodyValidation), function (req, res) {
-
     let newPurchase = req.body
     Purchase.addNewPurchase(newPurchase, function (err, purchase) {
         if (err) {

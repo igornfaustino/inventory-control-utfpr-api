@@ -19,7 +19,7 @@ const mongoose = require('mongoose');
 const PurchaseSchema = mongoose.Schema({
     number: String,
     management: String,
-    requisitionDate: String,
+    requisitionDate: Date,
     UGR: String,
     sector: String,
     requester: String,

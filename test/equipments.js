@@ -37,7 +37,6 @@ describe('Equipents Route', () => {
                 "solicitor": "John do",
                 "origin": "paraguai",
                 "equipmentType": "consumivel",
-                "quantity": 2,
                 "equipmentState": "Novo",
                 "locationHistory": []
             }
@@ -56,7 +55,6 @@ describe('Equipents Route', () => {
                 "solicitor": "John do",
                 "origin": "paraguai",
                 "equipmentType": "consumivel",
-                "quantity": 2,
                 "equipmentState": "Novo",
                 "locationHistory": []
             }
@@ -75,7 +73,6 @@ describe('Equipents Route', () => {
                 "solicitor": "John do",
                 "origin": "paraguai",
                 "equipmentType": "consumivel",
-                "quantity": 2,
                 "equipmentState": "Novo",
                 "locationHistory": [],
                 "newRandomField": "dssfas"
@@ -97,7 +94,6 @@ describe('Equipents Route', () => {
                 "description": "blabla",
                 "origin": "paraguai",
                 "equipmentType": "consumivel",
-                "quantity": 2,
                 "equipmentState": "Novo",
                 "locationHistory": []
             }
@@ -121,7 +117,6 @@ describe('Equipents Route', () => {
                 "description": "blabla",
                 "origin": "paraguai",
                 "equipmentType": "consumivel",
-                "quantity": 2,
                 "equipmentState": "Novo",
                 "locationHistory": []
             });
@@ -149,7 +144,6 @@ describe('Equipents Route', () => {
                 "description": "blabla",
                 "origin": "paraguai",
                 "equipmentType": "consumivel",
-                "quantity": 2,
                 "equipmentState": "Novo",
                 "locationHistory": []
             });
@@ -163,7 +157,6 @@ describe('Equipents Route', () => {
                         "description": "blabla",
                         "origin": "paraguai",
                         "equipmentType": "consumivel",
-                        "quantity": 2,
                         "equipmentState": "Novo",
                         "locationHistory": []
                     })
@@ -189,7 +182,6 @@ describe('Equipents Route', () => {
                 "description": "blabla",
                 "origin": "paraguai",
                 "equipmentType": "consumivel",
-                "quantity": 2,
                 "equipmentState": "Novo",
                 "locationHistory": []
             });

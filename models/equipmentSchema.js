@@ -21,7 +21,7 @@ const EquipmentSchema = mongoose.Schema({
     description: String,
     origin: String,
     equipmentType: String,
-    quantity: Number,
+    // quantity: Number,
     equipmentState: String,
     locationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LocationHistory' }]
 });
