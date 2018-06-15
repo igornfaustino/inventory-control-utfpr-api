@@ -14,7 +14,7 @@ mongoose.connection.once('open', function () {
 });
 
 router.post('/file/', upload.single('file'), function (req, res) {
-    res.json({ fileId: req.file.filename });
+    res.status(201).json({ fileId: req.file.filename });
 })
 
 router.get('/file/:filename', function (req, res) {
@@ -42,7 +42,7 @@ router.delete('/file/:filename', function (req, res) {
         if (err) {
             return res.json({ success: false, msg: 'Failed to delete file' });
         }
-        res.json({ success: true, msg: 'file deleted' })
+        res.status(204).send()
     });
 })
 

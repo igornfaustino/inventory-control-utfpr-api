@@ -17,7 +17,7 @@ router.get('/suppliers', function (req, res) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, suppliers: suppliers });
+        res.status(200).json({ success: true, suppliers: suppliers });
     });
 });
 
@@ -31,7 +31,7 @@ router.get('/supplier/:id', function (req, res) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, supplier: supplier });
+        res.status(200).json({ success: true, supplier: supplier });
     });
 });
 
@@ -45,9 +45,9 @@ router.post('/supplier/', validator.body(BodyValidation), function (req, res) {
     Supplier.addNewSupplier(newSupplier, function (err, supplier) {
         if (err) {
             //res.json(err);
-            return res.json({ success: false, msg: 'Failed to add supplier', err: err });
+            return res.status(400).json({ success: false, msg: 'Failed to add supplier', err: err });
         }
-        res.json({ success: true, msg: 'supplier added', supplier: supplier });
+        res.status(201).json({ success: true, msg: 'supplier added', supplier: supplier });
     });
 })
 
@@ -59,9 +59,9 @@ router.put('/supplier/:id', validator.body(BodyValidation), function (req, res) 
     updatedSupplier._id = req.params.id
     Supplier.updateSupplier(updatedSupplier, function (err, result) {
         if (err) {
-            return res.json({ success: false, msg: 'Failed to update supplier' });
+            return res.status(400).json({ success: false, msg: 'Failed to update supplier' });
         }
-        res.json({ success: true, msg: 'supplier updated', result: result });
+        res.status(200).json({ success: true, msg: 'supplier updated', result: result });
     });
 });
 
@@ -72,9 +72,9 @@ router.delete('/supplier/:id', function (req, res) {
     const id = req.params.id;
     Supplier.deleteSupplier(id, function (err, result) {
         if (err) {
-            return res.json({ success: false, msg: 'Failed to delete supplier' });
+            return res.status(400).json({ success: false, msg: 'Failed to delete supplier' });
         }
-        res.json({ success: true, msg: 'supplier deleted', result: result })
+        res.status(204).send()
     })
 });
 

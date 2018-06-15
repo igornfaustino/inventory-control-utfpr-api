@@ -16,7 +16,7 @@ router.get('/purchase/', function (req, res) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, purchases: purchases });
+        res.status(200).json({ success: true, purchases: purchases });
     });
 });
 
@@ -30,7 +30,7 @@ router.get('/purchase/:id', function (req, res) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, purchase: purchase });
+        res.status(200).json({ success: true, purchase: purchase });
     });
 });
 
@@ -44,7 +44,7 @@ router.get('/purchase/items/:id', function (req, res) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, items: items });
+        res.status(200).json({ success: true, items: items });
     });
 });
 
@@ -56,9 +56,9 @@ router.post('/purchase/', validator.body(BodyValidation), function (req, res) {
     Purchase.addNewPurchase(newPurchase, function (err, purchase) {
         if (err) {
             //res.json(err);
-            return res.json({ success: false, msg: 'Failed to add purchase', err: err });
+            return res.status(400).json({ success: false, msg: 'Failed to add purchase', err: err });
         }
-        res.json({ success: true, msg: 'Purchase added', purchase: purchase });
+        res.status(201).json({ success: true, msg: 'Purchase added', purchase: purchase });
     });
 })
 
@@ -70,9 +70,9 @@ router.put('/purchase/:id', validator.body(BodyValidation), function (req, res) 
     updatedPurchase.id = req.params.id
     Purchase.updatePurchase(updatedPurchase, function (err, purchase) {
         if (err) {
-            return res.json({ success: false, msg: 'Failed to update purchase' });
+            return res.status(400).json({ success: false, msg: 'Failed to update purchase' });
         }
-        res.json({ success: true, msg: 'Purchase updated', purchase: purchase });
+        res.status(200).json({ success: true, msg: 'Purchase updated', purchase: purchase });
     });
 });
 
@@ -83,9 +83,9 @@ router.delete('/purchase/:id', function (req, res) {
     const id = req.params.id;
     Purchase.deletePurchase(id, function (err, purchase) {
         if (err) {
-            return res.json({ success: false, msg: 'Failed to delete purchase' });
+            return res.status(400).json({ success: false, msg: 'Failed to delete purchase' });
         }
-        res.json({ success: true, msg: 'Purchase deleted', purchase: purchase })
+        res.status(204).send()
     })
 });
 

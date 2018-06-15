@@ -19,7 +19,7 @@ router.get('/equipments', function (req, res) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, equipments: equipments });
+        res.status(200).json({ success: true, equipments: equipments });
     });
 });
 
@@ -33,7 +33,7 @@ router.get('/equipment/:id', function (req, res) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, equipment: equipment });
+        res.status(200).json({ success: true, equipment: equipment });
     });
 });
 
@@ -49,7 +49,7 @@ router.post('/equipment/', validator.body(BodyValidation), function (req, res) {
             //res.json(err);
             return res.json({ success: false, msg: 'Failed to add equipment', err: err });
         }
-        res.json({ success: true, msg: 'equipment added', equipment: equipment });
+        res.status(201).json({ success: true, msg: 'equipment added', equipment: equipment });
     });
 })
 
@@ -63,7 +63,7 @@ router.put('/equipment/:id', validator.body(BodyValidation), function (req, res)
         if (err) {
             return res.json({ success: false, msg: 'Failed to update equipment' });
         }
-        res.json({ success: true, msg: 'equipment updated', result: equipment });
+        res.status(200).json({ success: true, msg: 'equipment updated', result: equipment });
     });
 });
 
@@ -76,7 +76,7 @@ router.delete('/equipment/:id', function (req, res) {
         if (err) {
             return res.json({ success: false, msg: 'Failed to delete equipment' });
         }
-        res.json({ success: true, msg: 'Equipment deleted', equipment: equipment })
+        res.status(204).send()
     });
 });
 

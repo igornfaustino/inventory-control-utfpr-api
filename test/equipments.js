@@ -101,7 +101,7 @@ describe('Equipents Route', () => {
                 .post('/api/equipment')
                 .send(equipment)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(201);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(true);
                     done();
@@ -188,10 +188,7 @@ describe('Equipents Route', () => {
                 chai.request(server)
                     .delete('/api/equipment/' + equipment.id)
                     .end((err, res) => {
-                        res.should.have.status(200);
-                        res.body.should.be.a('object');
-                        res.body.should.have.property('msg').eql('Equipment deleted');
-                        res.body.should.have.property('success').eql(true);
+                        res.should.have.status(204);
                         done();
                     });
             });

@@ -94,7 +94,7 @@ describe('Items Requisition Route', () => {
 				.post('/api/requisition')
 				.send(requisition)
 				.end((err, res) => {
-					res.should.have.status(200);
+					res.should.have.status(201);
 					res.body.should.be.a('object');
 					res.body.should.have.property('success').eql(true);
 					res.body.requisition.should.have.property('siorg');
@@ -201,10 +201,7 @@ describe('Items Requisition Route', () => {
 				chai.request(server)
 					.delete('/api/requisition/' + requisition.id)
 					.end((err, res) => {
-						res.should.have.status(200);
-						res.body.should.be.a('object');
-						res.body.should.have.property('msg').eql('Requisition deleted');
-						res.body.should.have.property('success').eql(true);
+						res.should.have.status(204);
 						done();
 					});
 			});

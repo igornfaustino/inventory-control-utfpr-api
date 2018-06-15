@@ -96,7 +96,7 @@ describe('Purchase Route', () => {
                 .post('/api/purchase')
                 .send(purchase)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(201);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(true);
                     done();
@@ -175,10 +175,7 @@ describe('Purchase Route', () => {
                 chai.request(server)
                     .delete('/api/purchase/' + purchase.id)
                     .end((err, res) => {
-                        res.should.have.status(200);
-                        res.body.should.be.a('object');
-                        res.body.should.have.property('msg').eql('Purchase deleted');
-                        res.body.should.have.property('success').eql(true);
+                        res.should.have.status(204);
                         done();
                     });
             });
