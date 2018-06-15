@@ -58,7 +58,7 @@ router.post('/requisition/', validator.body(BodyValidation), function (req, res)
 		newRequisition.date = moment().format('L')
 	}
 	if (!req.body.status) {
-		newRequisition.status = 'pendente'
+		newRequisition.status = 'Aberto'
 	}
 	Requisition.addNewRequisition(newRequisition, function (err, requisition) {
 		if (err) {
