@@ -16,45 +16,37 @@ const mongoose = require('mongoose');
  *   about CNPJ, corporate name (razão social), company name, bids on other trades.
  */
 
-const Purchasechema = mongoose.Schema({
+const PurchaseSchema = mongoose.Schema({
+    number: String,
     management: String,
-    requisitionDate: String,
+    requisitionDate: Date,
     UGR: String,
     sector: String,
     requester: String,
     requisitionItems: [{
         item: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
-        itemSupplier: {
-            name: String,
-            cnpj: String,
-            phone: String,
-            address: {
-                number: Number,
-                street: String,
-                city: String,
-                state: String,
-                country: String,
-            }
-        },
+        itemSupplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' },
     }],
 });
 
-module.exports = mongoose.model('Purchase', Purchasechema);
-const Purchase = mongoose.model('Purchase', Purchasechema);
+module.exports = mongoose.model('Purchase', PurchaseSchema);
+const Purchase = mongoose.model('Purchase', PurchaseSchema);
 
 module.exports.getPurchaseById = function (id, callback) {
     Purchase.findById(id).exec((err, purchase) => {
-        Purchase.populate(purchase, 'requisitionItems.item', callback)
+        if(err){
+            return callback(true, null)
+        }
+        purchase.populate('requisitionItems.item').populate('requisitionItems.itemSupplier', callback)
     });
 }
 
-//module.exports.getPurchaseByRequisitionDate = function(requisitionDate, callback) {
-//   Purchase.find(callback);
-//}
-
 module.exports.getAllPurchases = function (callback) {
     Purchase.find().exec((err, purchase) => {
-        Purchase.populate(purchase, 'requisitionItems.item', callback)
+        if(err){
+            return callback(true, null)
+        }
+        Purchase.populate(purchase, 'requisitionItems.item requisitionItems.itemSupplier', callback)
     });
 }
 
@@ -72,19 +64,9 @@ module.exports.deletePurchase = function (purchaseId, callback) {
 
 module.exports.getAllItens = function (purchaseId, callback) {
     Purchase.findById(purchaseId, 'requisitionItems').exec((err, purchase) => {
+        if(err){
+            return callback(true, null)
+        }
         Purchase.populate(purchase, 'requisitionItems.item', callback)
     });
-}
-
-module.exports.updateSupplier = function (supplier, callback) {
-    Purchase.updateMany({
-        'requisitionItems.itemSupplier.cnpj': supplier.cnpj
-    },
-        {
-            $set:
-                {
-                    'requisitionItems.$.itemSupplier': supplier
-                }
-
-        }, callback);
 }

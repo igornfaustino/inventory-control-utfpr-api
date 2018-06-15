@@ -24,21 +24,23 @@ const SupplierSchema = {
 
 const ItemsRequisitionSchema = {
     _id: Joi.any(),
-    siorg: Joi.string(),
+    siorg: Joi.string().allow('').optional(),
+    itemType: Joi.string(),
     __v: Joi.any(),
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),
     justification: Joi.string().regex(/^[^%<>^$]+$/),
     priceJustification: Joi.string().regex(/^[^%<>^$]+$/),
     qtd: Joi.number().required(),
     quotation: Joi.array().items(Joi.object().keys(QuotationSchema)),
-    itemSupplier: Joi.object().keys(SupplierSchema),
     date: Joi.date(),
-    status: Joi.string()
+    status: Joi.string(),
+    changeJustification: Joi.string()
 };
 
 
 const PurchaseRequisitionSchema = {
     _id: Joi.any(),
+    number: Joi.string(),
     management: Joi.string().required(),
     requisitionDate: Joi.date().required(),
     UGR: Joi.string().required(),
@@ -47,13 +49,48 @@ const PurchaseRequisitionSchema = {
     requester: Joi.string().required(),
     requisitionItems: Joi.array().items(Joi.object().keys({
         item: Joi.any(),
-        itemSupplier: Joi.object().keys(SupplierSchema),
+        itemSupplier: Joi.any(),
     })).required()
+};
+
+const EquipmentHitorySchema = {
+    _id: Joi.any(),
+    justification: Joi.string().regex(/^[^%<>^$]+$/).required(),
+    locationType: Joi.string().required(),
+    location: Joi.string().required(),
+    date: Joi.any(),
+    __v: Joi.any(),
+};
+
+const EquipmentSchema = {
+    _id: Joi.any(),
+    __v: Joi.any(),
+    siorg: Joi.string(),
+    patrimonyNumber: Joi.any(),
+    buyer: Joi.string().required(),
+    solicitor: Joi.string().required(),
+    description: Joi.string().regex(/^[^%<>^$]+$/).required(),
+    origin: Joi.string(),
+    equipmentType: Joi.string(),
+    equipmentState: Joi.string(),
+    locationHistory: Joi.array().items(Joi.any())
+};
+
+const StatusSchema = {
+    status: Joi.string()
+}
+
+const TypeSchema = {
+    type: Joi.string()
 }
 
 module.exports = {
     QuotationSchema,
     SupplierSchema,
     ItemsRequisitionSchema,
-    PurchaseRequisitionSchema
+    PurchaseRequisitionSchema,
+    EquipmentSchema,
+    EquipmentHitorySchema,
+    StatusSchema,
+    TypeSchema
 }

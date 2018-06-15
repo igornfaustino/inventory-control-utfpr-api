@@ -38,12 +38,11 @@ router.get('/file/:filename', function (req, res) {
 })
 
 router.delete('/file/:filename', function (req, res) {
-    gfs.remove({filename: req.params.filename, root: 'uploads'}, function (err) {
+    gfs.remove({ filename: req.params.filename, root: 'uploads' }, function (err) {
         if (err) {
-            res.json({ success: false, msg: 'Failed to delete file' });
-        } else {
-            res.json({ success: true, msg: 'file deleted' })
+            return res.json({ success: false, msg: 'Failed to delete file' });
         }
+        res.json({ success: true, msg: 'file deleted' })
     });
 })
 
