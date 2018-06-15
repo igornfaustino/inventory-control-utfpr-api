@@ -19,9 +19,8 @@ router.get('/requisition/:id', function (req, res) {
 	Requisition.getRequisitionById(id, function (err, requisition) {
 		if (err) {
 			return res.status(400).send(err);
-		} else {
-			res.json({ success: true, requisition: requisition });
 		}
+		res.json({ success: true, requisition: requisition });
 	});
 });
 
@@ -32,10 +31,10 @@ router.get('/requisition/:id', function (req, res) {
 router.get('/requisitions/', function (req, res) {
 	Requisition.getAllRequisition(function (err, requisitions) {
 		if (err) {
-			res.status(400).send(err);
-		} else {
-			res.json({ success: true, requisitions: requisitions });
+			return res.status(400).send(err);
 		}
+		res.json({ success: true, requisitions: requisitions });
+
 	});
 });
 
@@ -63,10 +62,9 @@ router.post('/requisition/', validator.body(BodyValidation), function (req, res)
 	}
 	Requisition.addNewRequisition(newRequisition, function (err, requisition) {
 		if (err) {
-			res.status(400).json({ success: false, msg: 'Failed to add requisition', err: err });
-		} else {
-			res.json({ success: true, msg: 'requisition registered', requisition: requisition });
+			return res.status(400).json({ success: false, msg: 'Failed to add requisition', err: err });
 		}
+		res.json({ success: true, msg: 'requisition registered', requisition: requisition });
 	});
 });
 
@@ -80,10 +78,9 @@ router.put('/requisition/:id', validator.body(BodyValidation), function (req, re
 
 	Requisition.updateRequisition(updatedRequisition, function (err, requisition) {
 		if (err) {
-			res.json({ success: false, msg: 'Failed to update requisition' });
-		} else {
-			res.json({ success: true, msg: 'requisition updated', requisition: requisition });
+			return res.json({ success: false, msg: 'Failed to update requisition' });
 		}
+		res.json({ success: true, msg: 'requisition updated', requisition: requisition });
 	});
 });
 
@@ -94,10 +91,9 @@ router.delete('/requisition/:id', function (req, res, next) {
 	var id = req.params.id;
 	Requisition.deleteRequisition(id, function (err, requisition) {
 		if (err) {
-			res.json({ success: false, msg: 'Failed to delete requisition' });
-		} else {
-			res.json({ success: true, msg: 'Requisition deleted' });
+			return res.json({ success: false, msg: 'Failed to delete requisition' });
 		}
+		res.json({ success: true, msg: 'Requisition deleted' });
 	});
 });
 

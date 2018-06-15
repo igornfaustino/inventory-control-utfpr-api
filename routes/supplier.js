@@ -15,7 +15,7 @@ const BodyValidation = Joi.object(SupplierSchema);
 router.get('/suppliers', function (req, res) {
     Supplier.getAllSuppliers(function (err, suppliers) {
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
         }
         res.json({ success: true, suppliers: suppliers });
     });
@@ -29,7 +29,7 @@ router.get('/supplier/:id', function (req, res) {
     const id = req.params.id;
     Supplier.getSupplierById(id, function (err, supplier) {
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
         }
         res.json({ success: true, supplier: supplier });
     });
@@ -45,10 +45,9 @@ router.post('/supplier/', validator.body(BodyValidation), function (req, res) {
     Supplier.addNewSupplier(newSupplier, function (err, supplier) {
         if (err) {
             //res.json(err);
-            res.json({ success: false, msg: 'Failed to add supplier', err: err });
-        } else {
-            res.json({ success: true, msg: 'supplier added', supplier: supplier });
+            return res.json({ success: false, msg: 'Failed to add supplier', err: err });
         }
+        res.json({ success: true, msg: 'supplier added', supplier: supplier });
     });
 })
 
@@ -60,10 +59,9 @@ router.put('/supplier/:id', validator.body(BodyValidation), function (req, res) 
     updatedSupplier._id = req.params.id
     Supplier.updateSupplier(updatedSupplier, function (err, result) {
         if (err) {
-            res.json({ success: false, msg: 'Failed to update supplier' });
-        } else {
-            res.json({ success: true, msg: 'supplier updated', result: result });
+            return res.json({ success: false, msg: 'Failed to update supplier' });
         }
+        res.json({ success: true, msg: 'supplier updated', result: result });
     });
 });
 
@@ -74,10 +72,9 @@ router.delete('/supplier/:id', function (req, res) {
     const id = req.params.id;
     Supplier.deleteSupplier(id, function (err, result) {
         if (err) {
-            res.json({ success: false, msg: 'Failed to delete supplier' });
-        } else {
-            res.json({ success: true, msg: 'supplier deleted', result: result })
+            return res.json({ success: false, msg: 'Failed to delete supplier' });
         }
+        res.json({ success: true, msg: 'supplier deleted', result: result })
     })
 });
 

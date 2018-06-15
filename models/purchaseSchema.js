@@ -34,12 +34,18 @@ const Purchase = mongoose.model('Purchase', PurchaseSchema);
 
 module.exports.getPurchaseById = function (id, callback) {
     Purchase.findById(id).exec((err, purchase) => {
+        if(err){
+            return callback(true, null)
+        }
         purchase.populate('requisitionItems.item').populate('requisitionItems.itemSupplier', callback)
     });
 }
 
 module.exports.getAllPurchases = function (callback) {
     Purchase.find().exec((err, purchase) => {
+        if(err){
+            return callback(true, null)
+        }
         Purchase.populate(purchase, 'requisitionItems.item requisitionItems.itemSupplier', callback)
     });
 }
@@ -58,6 +64,9 @@ module.exports.deletePurchase = function (purchaseId, callback) {
 
 module.exports.getAllItens = function (purchaseId, callback) {
     Purchase.findById(purchaseId, 'requisitionItems').exec((err, purchase) => {
+        if(err){
+            return callback(true, null)
+        }
         Purchase.populate(purchase, 'requisitionItems.item', callback)
     });
 }

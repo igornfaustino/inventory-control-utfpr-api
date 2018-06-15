@@ -41,7 +41,7 @@ module.exports.updateEquipment = function (updateEquipment, callback) {
     Equipment.findOneAndUpdate({ '_id': updateEquipment._id }, {
         "$set": {
             "siorg": updateEquipment.siorg,
-            "patrimonyNumber": updateEquipment.patrimonyNumber,
+            // "patrimonyNumber": updateEquipment.patrimonyNumber,
             "buyer": updateEquipment.buyer,
             "solicitor": updateEquipment.solicitor,
             "description": updateEquipment.description,
@@ -62,16 +62,15 @@ module.exports.deleteEquipment = function (equipmentId, callback) {
 
 module.exports.moveEquipment = function (equipmentId, newLocation, callback) {
     LocationHistory.addNewLocation(newLocation, (err, location) => {
-        if (location) {
-            Equipment.getEquipmentById(equipmentId, (err, equipment) => {
-                console.log(equipmentId)
-                if (equipment) {
-                    equipment.locationHistory.unshift(location._id)
-                    equipment.save(callback)
-                }
-            })
-        } else {
-            callback(err, null)
+        if (err) {
+            return callback(true, null)
         }
+        Equipment.getEquipmentById(equipmentId, (err, equipment) => {
+            if (err) {
+                return callback(true, null)
+            }
+            equipment.locationHistory.unshift(location._id)
+            equipment.save(callback)
+        })
     })
 }

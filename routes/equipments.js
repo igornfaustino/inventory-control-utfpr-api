@@ -17,7 +17,7 @@ const BodyValidationHistory = Joi.object(EquipmentHitorySchema);
 router.get('/equipments', function (req, res) {
     Equipments.getAllEquipments(function (err, equipments) {
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
         }
         res.json({ success: true, equipments: equipments });
     });
@@ -31,7 +31,7 @@ router.get('/equipment/:id', function (req, res) {
     const id = req.params.id;
     Equipments.getEquipmentById(id, function (err, equipment) {
         if (err) {
-            res.status(400).send(err);
+            return res.status(400).send(err);
         }
         res.json({ success: true, equipment: equipment });
     });
@@ -47,10 +47,9 @@ router.post('/equipment/', validator.body(BodyValidation), function (req, res) {
     Equipments.addNewEquipment(newEquipment, function (err, equipment) {
         if (err) {
             //res.json(err);
-            res.json({ success: false, msg: 'Failed to add equipment', err: err });
-        } else {
-            res.json({ success: true, msg: 'equipment added', equipment: equipment });
+            return res.json({ success: false, msg: 'Failed to add equipment', err: err });
         }
+        res.json({ success: true, msg: 'equipment added', equipment: equipment });
     });
 })
 
@@ -62,10 +61,9 @@ router.put('/equipment/:id', validator.body(BodyValidation), function (req, res)
     updatedEquipment._id = req.params.id
     Equipments.updateEquipment(updatedEquipment, function (err, equipment) {
         if (err) {
-            res.json({ success: false, msg: 'Failed to update equipment' });
-        } else {
-            res.json({ success: true, msg: 'equipment updated', result: equipment });
+            return res.json({ success: false, msg: 'Failed to update equipment' });
         }
+        res.json({ success: true, msg: 'equipment updated', result: equipment });
     });
 });
 
@@ -76,11 +74,10 @@ router.delete('/equipment/:id', function (req, res) {
     const id = req.params.id;
     Equipments.deleteEquipment(id, function (err, equipment) {
         if (err) {
-            res.json({ success: false, msg: 'Failed to delete equipment' });
-        } else {
-            res.json({ success: true, msg: 'Equipment deleted', equipment: equipment })
+            return res.json({ success: false, msg: 'Failed to delete equipment' });
         }
-    })
+        res.json({ success: true, msg: 'Equipment deleted', equipment: equipment })
+    });
 });
 
 router.post('/equipments/:id/move', validator.body(BodyValidationHistory), function (req, res) {
@@ -91,9 +88,8 @@ router.post('/equipments/:id/move', validator.body(BodyValidationHistory), funct
     Equipments.moveEquipment(equipmentId, newLocation, function (err, equipment) {
         if (err) {
             res.json({ success: false, msg: 'Failed to update equipment' });
-        } else {
-            res.json({ success: true, msg: 'equipment updated', result: equipment });
         }
+        res.json({ success: true, msg: 'equipment updated', result: equipment });
     });
 });
 
