@@ -5,7 +5,7 @@
   "scripts": {
     "test": "mocha --timeout 10000 --exit",
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "./node_modules/nodemon/bin/nodemon.js server.js"
   },
   "dependencies": {
     "body-parser": "^1.15.1",

@@ -15,6 +15,7 @@ const LocationHistory = require('./locationHistorySchema')
  */
 const EquipmentSchema = mongoose.Schema({
     siorg: String,
+    isPermanent: Boolean,
     patrimonyNumber: String,
     buyer: String,
     solicitor: String,
@@ -41,7 +42,8 @@ module.exports.updateEquipment = function (updateEquipment, callback) {
     Equipment.findOneAndUpdate({ '_id': updateEquipment._id }, {
         "$set": {
             "siorg": updateEquipment.siorg,
-            // "patrimonyNumber": updateEquipment.patrimonyNumber,
+            "isPermanent": updateEquipment.isPermanent ? updateEquipment.isPermanent : false,
+            "patrimonyNumber": updateEquipment.patrimonyNumber ? updateEquipment.patrimonyNumber : null,
             "buyer": updateEquipment.buyer,
             "solicitor": updateEquipment.solicitor,
             "description": updateEquipment.description,

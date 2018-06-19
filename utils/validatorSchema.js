@@ -66,6 +66,7 @@ const EquipmentSchema = {
     _id: Joi.any(),
     __v: Joi.any(),
     siorg: Joi.string(),
+    isPermanent: Joi.any(),
     patrimonyNumber: Joi.any(),
     buyer: Joi.string().required(),
     solicitor: Joi.string().required(),
