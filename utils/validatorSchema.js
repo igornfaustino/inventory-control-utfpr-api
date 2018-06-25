@@ -85,6 +85,18 @@ const TypeSchema = {
     type: Joi.string()
 }
 
+const SectorSchema = {
+    sector: Joi.string()
+}
+
+const UGRSchema = {
+    ugr: Joi.string()
+}
+
+const ManagementSchema = {
+    management: Joi.string()
+}
+
 module.exports = {
     QuotationSchema,
     SupplierSchema,
@@ -93,5 +105,8 @@ module.exports = {
     EquipmentSchema,
     EquipmentHitorySchema,
     StatusSchema,
-    TypeSchema
+    TypeSchema,
+    SectorSchema,
+    UGRSchema,
+    ManagementSchema
 }
