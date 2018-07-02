@@ -14,3 +14,7 @@ module.exports.addNewUGR = function (newUGR, callback) {
 module.exports.getAllUGR = function (callback) {
     UGR.find(callback)
 }
+
+module.exports.deleteUGR = function (ugrId, callback) {
+    UGR.findById(ugrId).remove(callback);
+}

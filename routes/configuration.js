@@ -122,4 +122,71 @@ router.post('/sector', validator.body(sectorValidation), function (req, res) {
     })
 });
 
+// ----------- Delete ------------
+
+/**
+ * DELETE sector
+ */
+router.delete('/sector/:id', function (req, res) {
+    const id = req.params.id;
+    Sector.deleteSector(id, function (err) {
+        if (err) {
+            return res.json({ success: false, msg: 'Failed to delete sector' });
+        }
+        res.status(204).send()
+    });
+});
+
+/**
+ * DELETE /api/equipment/:id
+ */
+router.delete('/management/:id', function (req, res) {
+    const id = req.params.id;
+    Management.deleteManagement(id, function (err) {
+        if (err) {
+            return res.json({ success: false, msg: 'Failed to delete Management' });
+        }
+        res.status(204).send()
+    });
+});
+
+/**
+ * DELETE /api/equipment/:id
+ */
+router.delete('/ugr/:id', function (req, res) {
+    const id = req.params.id;
+    UGR.deleteUGR(id, function (err) {
+        if (err) {
+            return res.json({ success: false, msg: 'Failed to delete UGR' });
+        }
+        res.status(204).send()
+    });
+});
+
+/**
+ * DELETE /api/equipment/:id
+ */
+router.delete('/type/:id', function (req, res) {
+    const id = req.params.id;
+    Type.deleteType(id, function (err) {
+        if (err) {
+            return res.json({ success: false, msg: 'Failed to delete type' });
+        }
+        res.status(204).send()
+    });
+});
+
+/**
+ * DELETE /api/equipment/:id
+ */
+router.delete('/status/:id', function (req, res) {
+    const id = req.params.id;
+    Status.deleteStatus(id, function (err) {
+        if (err) {
+            return res.json({ success: false, msg: 'Failed to delete status' });
+        }
+        res.status(204).send()
+    });
+});
+
 module.exports = router

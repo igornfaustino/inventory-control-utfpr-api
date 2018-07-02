@@ -14,3 +14,7 @@ module.exports.addNewManagement = function (newManagement, callback) {
 module.exports.getAllManagement = function (callback) {
     Management.find(callback)
 }
+
+module.exports.deleteManagement = function (managementId, callback) {
+    Management.findById(managementId).remove(callback);
+}
