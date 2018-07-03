@@ -97,6 +97,21 @@ const ManagementSchema = {
     management: Joi.string()
 }
 
+const AdminSchema = {
+    admin: Joi.string()
+}
+
+const UserSchema = {
+    email: Joi.string().regex(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).required(),
+    name: Joi.string().required(),
+    password: Joi.string().min(6).required()
+}
+
+const LoginSchema = {
+    email: Joi.string().regex(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).required(),
+    password: Joi.string().min(6).required()
+}
+
 module.exports = {
     QuotationSchema,
     SupplierSchema,
@@ -108,5 +123,8 @@ module.exports = {
     TypeSchema,
     SectorSchema,
     UGRSchema,
-    ManagementSchema
+    ManagementSchema,
+    AdminSchema,
+    UserSchema,
+    LoginSchema
 }
