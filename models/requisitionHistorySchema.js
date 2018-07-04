@@ -9,6 +9,7 @@ const RequisitionHistorySchema = mongoose.Schema({
 	itemType: String,
 	priceJustification: String,
 	qtd: Number,
+	qtdReceived: Number,
 	date: Date,
 	status: String
 });
