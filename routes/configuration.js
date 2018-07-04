@@ -17,8 +17,11 @@ const ugrValidation = Joi.object(UGRSchema)
 const managementValidation = Joi.object(ManagementSchema)
 const sectorValidation = Joi.object(SectorSchema)
 
+const passport = require('passport');
+const { isAdmin } = require("../middleWares/isAdminMW");
+
 // GET all status.
-router.get('/status', function (req, res) {
+router.get('/status', passport.authenticate('jwt', { session: false }), function (req, res) {
     Status.getAllStatus((err, status) => {
         if (err) {
             res.status(400).send(err);
@@ -28,7 +31,7 @@ router.get('/status', function (req, res) {
 });
 
 // GET all type of itens.
-router.get('/type', function (req, res) {
+router.get('/type', passport.authenticate('jwt', { session: false }), function (req, res) {
     Type.getAllTypeItems((err, type) => {
         if (err) {
             res.status(400).send(err);
@@ -38,7 +41,7 @@ router.get('/type', function (req, res) {
 });
 
 // GET all ugr of itens.
-router.get('/ugr', function (req, res) {
+router.get('/ugr', passport.authenticate('jwt', { session: false }), function (req, res) {
     UGR.getAllUGR((err, ugr) => {
         if (err) {
             res.status(400).send(err);
@@ -48,7 +51,7 @@ router.get('/ugr', function (req, res) {
 });
 
 // GET all management of itens.
-router.get('/management', function (req, res) {
+router.get('/management', passport.authenticate('jwt', { session: false }), function (req, res) {
     Management.getAllManagement((err, management) => {
         if (err) {
             res.status(400).send(err);
@@ -58,7 +61,7 @@ router.get('/management', function (req, res) {
 });
 
 // GET all type of itens.
-router.get('/sector', function (req, res) {
+router.get('/sector', passport.authenticate('jwt', { session: false }), function (req, res) {
     Sector.getAllSector((err, sector) => {
         if (err) {
             res.status(400).send(err);
@@ -68,7 +71,7 @@ router.get('/sector', function (req, res) {
 });
 
 // add new status
-router.post('/status', validator.body(statusValidation), function (req, res) {
+router.post('/status', validator.body(statusValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let newStatus = req.body;
     Status.addNewStatus(newStatus, (err, status) => {
         if (err) {
@@ -79,7 +82,7 @@ router.post('/status', validator.body(statusValidation), function (req, res) {
 });
 
 // add new type
-router.post('/type', validator.body(typeValidation), function (req, res) {
+router.post('/type', validator.body(typeValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let newType = req.body;
     Type.addNewTypeItem(newType, (err, type) => {
         if (err) {
@@ -90,7 +93,7 @@ router.post('/type', validator.body(typeValidation), function (req, res) {
 });
 
 // add new type
-router.post('/ugr', validator.body(ugrValidation), function (req, res) {
+router.post('/ugr', validator.body(ugrValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let newUGR = req.body;
     UGR.addNewUGR(newUGR, (err, ugr) => {
         if (err) {
@@ -101,7 +104,7 @@ router.post('/ugr', validator.body(ugrValidation), function (req, res) {
 });
 
 // add new management
-router.post('/management', validator.body(managementValidation), function (req, res) {
+router.post('/management', validator.body(managementValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let newManagement = req.body;
     Management.addNewManagement(newManagement, (err, management) => {
         if (err) {
@@ -112,7 +115,7 @@ router.post('/management', validator.body(managementValidation), function (req, 
 });
 
 // add new sector
-router.post('/sector', validator.body(sectorValidation), function (req, res) {
+router.post('/sector', validator.body(sectorValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let newSector = req.body;
     Sector.addNewSector(newSector, (err, sector) => {
         if (err) {
@@ -127,7 +130,7 @@ router.post('/sector', validator.body(sectorValidation), function (req, res) {
 /**
  * DELETE sector
  */
-router.delete('/sector/:id', function (req, res) {
+router.delete('/sector/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Sector.deleteSector(id, function (err) {
         if (err) {
@@ -140,7 +143,7 @@ router.delete('/sector/:id', function (req, res) {
 /**
  * DELETE /api/equipment/:id
  */
-router.delete('/management/:id', function (req, res) {
+router.delete('/management/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Management.deleteManagement(id, function (err) {
         if (err) {
@@ -153,7 +156,7 @@ router.delete('/management/:id', function (req, res) {
 /**
  * DELETE /api/equipment/:id
  */
-router.delete('/ugr/:id', function (req, res) {
+router.delete('/ugr/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     UGR.deleteUGR(id, function (err) {
         if (err) {
@@ -166,7 +169,7 @@ router.delete('/ugr/:id', function (req, res) {
 /**
  * DELETE /api/equipment/:id
  */
-router.delete('/type/:id', function (req, res) {
+router.delete('/type/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Type.deleteType(id, function (err) {
         if (err) {
@@ -179,7 +182,7 @@ router.delete('/type/:id', function (req, res) {
 /**
  * DELETE /api/equipment/:id
  */
-router.delete('/status/:id', function (req, res) {
+router.delete('/status/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Status.deleteStatus(id, function (err) {
         if (err) {

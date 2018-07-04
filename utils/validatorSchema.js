@@ -30,7 +30,7 @@ const ItemsRequisitionSchema = {
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),
     justification: Joi.string().regex(/^[^%<>^$]+$/),
     priceJustification: Joi.string().regex(/^[^%<>^$]+$/),
-    qtd: Joi.number().required(),
+    qtd: Joi.number(),
     quotation: Joi.array().items(Joi.object().keys(QuotationSchema)),
     date: Joi.date(),
     status: Joi.string(),

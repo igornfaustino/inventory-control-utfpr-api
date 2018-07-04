@@ -2,6 +2,8 @@ process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
 let Equipment = require('../models/equipmentSchema');
+let User = require('../models/userScheme');
+let Admin = require('../models/adminSchema');
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -9,17 +11,36 @@ let server = require('../server');
 let should = chai.should();
 
 chai.use(chaiHttp);
+var token
 
 describe('Equipents Route', () => {
+    before((done) => {
+        chai.request(server).post('/api/register').send({
+            email: 'test@test.com',
+            password: 'teste123',
+            name: 'teste'
+        }).end((err, res) => {
+            Admin.addNewAdmin({admin: 'test@test.com'}, (err, user) => {
+                chai.request(server).post('/api/authenticate').send({
+                    email: 'test@test.com',
+                    password: 'teste123',
+                }).end((err, res) => {
+                    token = res.body.token;
+                    done()
+                })
+            })
+        })
+    });
     beforeEach((done) => {
         Equipment.remove({}, (err) => {
-            done();
+            done()
         });
     });
     describe('/GET Equipment', () => {
         it('it should GET all the equipments', (done) => {
             chai.request(server)
                 .get('/api/equipments')
+                .set('Authorization', token)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -43,6 +64,7 @@ describe('Equipents Route', () => {
             chai.request(server)
                 .post('/api/equipment')
                 .send(equipment)
+                .set('Authorization', token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -61,6 +83,7 @@ describe('Equipents Route', () => {
             chai.request(server)
                 .post('/api/equipment')
                 .send(equipment)
+                .set('Authorization', token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -81,6 +104,7 @@ describe('Equipents Route', () => {
             chai.request(server)
                 .post('/api/equipment')
                 .send(equipment)
+                .set('Authorization', token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -100,6 +124,7 @@ describe('Equipents Route', () => {
             chai.request(server)
                 .post('/api/equipment')
                 .send(equipment)
+                .set('Authorization', token)
                 .end((err, res) => {
                     res.should.have.status(201);
                     res.body.should.be.a('object');
@@ -124,6 +149,7 @@ describe('Equipents Route', () => {
                 chai.request(server)
                     .get('/api/equipment/' + equipment.id)
                     .send(equipment)
+                    .set('Authorization', token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -160,6 +186,7 @@ describe('Equipents Route', () => {
                         "equipmentState": "Novo",
                         "locationHistory": []
                     })
+                    .set('Authorization', token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -169,9 +196,9 @@ describe('Equipents Route', () => {
             });
         });
     });
-	/*
-	 * Test the /DELETE/:id route
-	 */
+    /*
+     * Test the /DELETE/:id route
+     */
     describe('/DELETE/:id equipment', () => {
         it('it should DELETE a equipment given the id', (done) => {
             let equipment = new Equipment({
@@ -187,6 +214,7 @@ describe('Equipents Route', () => {
             equipment.save((err, equipment) => {
                 chai.request(server)
                     .delete('/api/equipment/' + equipment.id)
+                    .set('Authorization', token)
                     .end((err, res) => {
                         res.should.have.status(204);
                         done();
@@ -194,4 +222,11 @@ describe('Equipents Route', () => {
             });
         });
     });
+    after(done => {
+        User.remove({}, () => {
+            Admin.remove({}, () => {
+                done()
+            })
+        })
+    })
 });

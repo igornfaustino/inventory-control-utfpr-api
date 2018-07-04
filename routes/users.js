@@ -27,9 +27,9 @@ router.post('/register', validator.body(userValidation), function (req, res, nex
 
 	User.addUser(newUser, function (err, user) {
 		if (err) {
-			res.json({ success: false, msg: 'Failed to register user' });
+			res.status(400).json({ success: false, msg: 'Failed to register user' });
 		} else {
-			res.json({ success: true, msg: 'user registered' });
+			res.status(201).json({ success: true, msg: 'user registered' });
 
 		}
 	});
@@ -52,7 +52,7 @@ router.post('/authenticate', validator.body(loginValidation), isUserAdmin, funct
 				res.json({
 					success: true,
 					token: "bearer " + token,
-					User: {
+					user: {
 						id: user._id,
 						name: user.name,
 						email: user.email,
