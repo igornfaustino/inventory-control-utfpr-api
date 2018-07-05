@@ -26,6 +26,7 @@ const PurchaseSchema = mongoose.Schema({
     requisitionItems: [{
         item: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
         itemSupplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' },
+        notify: Boolean
     }],
 });
 
@@ -34,7 +35,7 @@ const Purchase = mongoose.model('Purchase', PurchaseSchema);
 
 module.exports.getPurchaseById = function (id, callback) {
     Purchase.findById(id).exec((err, purchase) => {
-        if(err){
+        if (err) {
             return callback(true, null)
         }
         purchase.populate('requisitionItems.item').populate('requisitionItems.itemSupplier', callback)
@@ -43,7 +44,7 @@ module.exports.getPurchaseById = function (id, callback) {
 
 module.exports.getAllPurchases = function (callback) {
     Purchase.find().exec((err, purchase) => {
-        if(err){
+        if (err) {
             return callback(true, null)
         }
         Purchase.populate(purchase, 'requisitionItems.item requisitionItems.itemSupplier', callback)
@@ -51,7 +52,17 @@ module.exports.getAllPurchases = function (callback) {
 }
 
 module.exports.updatePurchase = function (updatedPurchase, callback) {
-    Purchase.update({ '_id': updatedPurchase._id }, updatedPurchase, callback)
+    Purchase.findOne({ '_id': updatedPurchase._id }, (err, purchase) => {
+        purchase.number = updatedPurchase.number ? updatedPurchase.number : purchase.number
+        purchase.management = updatedPurchase.management ? updatedPurchase.management : purchase.management
+        purchase.requisitionDate = updatedPurchase.requisitionDate ? updatedPurchase.requisitionDate : purchase.requisitionDate
+        purchase.UGR = updatedPurchase.UGR ? updatedPurchase.UGR : purchase.UGR
+        purchase.sector = updatedPurchase.sector ? updatedPurchase.sector : purchase.sector
+        purchase.requester = updatedPurchase.requester ? updatedPurchase.requester : purchase.requester
+        purchase.requisitionItems = updatedPurchase.requisitionItems ? updatedPurchase.requisitionItems : purchase.requisitionItems
+
+        purchase.save(callback)
+    })
 }
 
 module.exports.addNewPurchase = function (newPurchase, callback) {
@@ -64,7 +75,7 @@ module.exports.deletePurchase = function (purchaseId, callback) {
 
 module.exports.getAllItens = function (purchaseId, callback) {
     Purchase.findById(purchaseId, 'requisitionItems').exec((err, purchase) => {
-        if(err){
+        if (err) {
             return callback(true, null)
         }
         Purchase.populate(purchase, 'requisitionItems.item', callback)

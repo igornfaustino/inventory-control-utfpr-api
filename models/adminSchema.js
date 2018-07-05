@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const User = require('./userScheme');
 
 const AdminSchema = mongoose.Schema({
     admin: String
@@ -7,9 +8,20 @@ const AdminSchema = mongoose.Schema({
 module.exports = mongoose.model('Admin', AdminSchema);
 const Admin = mongoose.model('Admin', AdminSchema);
 
-// TODO: verify if is user
+module.exports.getAdmin = function (admin, callback) {
+    Admin.findOne({
+        admin: admin
+    }, callback)
+}
+
 module.exports.addNewAdmin = function (newAdmin, callback) {
-    Admin.create(newAdmin, callback)
+    User.getUserByEmail(newAdmin.admin, (err, user) => {
+        if (user) {
+            Admin.create(newAdmin, callback)
+        } else {
+            callback("user not found", null)
+        }
+    })
 }
 
 module.exports.getAllAdmin = function (callback) {
