@@ -5,6 +5,8 @@ const Joi = require('joi');
 const validator = require('express-joi-validation')({});
 const { ItemsRequisitionSchema } = require('../utils/validatorSchema');
 const moment = require('moment');
+const passport = require('passport');
+const { isAdmin } = require("../middleWares/isAdminMW");
 
 const BodyValidation = Joi.object(ItemsRequisitionSchema);
 
@@ -14,7 +16,7 @@ moment().locale('pt-br');
  * GET /api/requisitions/:id
  * use id to return one single requisition
  */
-router.get('/requisition/:id', function (req, res) {
+router.get('/requisition/:id',passport.authenticate('jwt', { session: false }), function (req, res) {
 	const id = req.params.id;
 	Requisition.getRequisitionById(id, function (err, requisition) {
 		if (err) {
@@ -28,7 +30,7 @@ router.get('/requisition/:id', function (req, res) {
  * GET /api/requisitions/
  * return all requisitions
  */
-router.get('/requisitions/', function (req, res) {
+router.get('/requisitions/',passport.authenticate('jwt', { session: false }), function (req, res) {
 	Requisition.getAllRequisition(function (err, requisitions) {
 		if (err) {
 			return res.status(400).send(err);
@@ -52,7 +54,7 @@ router.get('/requisitions/', function (req, res) {
  *		"qtd": 3
  * }
  */
-router.post('/requisition/', validator.body(BodyValidation), function (req, res) {
+router.post('/requisition/', validator.body(BodyValidation),passport.authenticate('jwt', { session: false }), function (req, res) {
 	let newRequisition = req.body
 	if (!req.body.date) {
 		newRequisition.date = moment().format('L')
@@ -72,7 +74,7 @@ router.post('/requisition/', validator.body(BodyValidation), function (req, res)
  * PUT /api/requisition
  * body
  */
-router.put('/requisition/:id', validator.body(BodyValidation), function (req, res, next) {
+router.put('/requisition/:id', validator.body(BodyValidation),passport.authenticate('jwt', { session: false }), isAdmin, function (req, res, next) {
 	let updatedRequisition = req.body;
 	updatedRequisition._id = req.params.id;
 
@@ -87,7 +89,7 @@ router.put('/requisition/:id', validator.body(BodyValidation), function (req, re
 /**
  * DELETE /api/requisition/:id
  */
-router.delete('/requisition/:id', function (req, res, next) {
+router.delete('/requisition/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res, next) {
 	var id = req.params.id;
 	Requisition.deleteRequisition(id, function (err, requisition) {
 		if (err) {

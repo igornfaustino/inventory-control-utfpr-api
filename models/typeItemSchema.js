@@ -14,3 +14,7 @@ module.exports.addNewTypeItem = function (newTypeItem, callback) {
 module.exports.getAllTypeItems = function (callback) {
     TypeItem.find(callback)
 }
+
+module.exports.deleteType = function (typeId, callback) {
+    TypeItem.findById(typeId).remove(callback);
+}

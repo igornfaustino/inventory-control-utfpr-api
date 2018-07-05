@@ -3,7 +3,10 @@ const router = express.Router();
 const Purchase = require('../models/purchaseSchema');
 const Joi = require('joi');
 const validator = require('express-joi-validation')({});
-const { PriceSchema, SupplierSchema, ItemsRequisitionSchema, PurchaseRequisitionSchema } = require('../utils/validatorSchema');
+const { PurchaseRequisitionSchema } = require('../utils/validatorSchema');
+
+const passport = require('passport');
+const { isAdmin } = require("../middleWares/isAdminMW");
 
 const BodyValidation = Joi.object(PurchaseRequisitionSchema);
 
@@ -11,7 +14,7 @@ const BodyValidation = Joi.object(PurchaseRequisitionSchema);
  * GET /api/purchase/
  * return all purchases
  */
-router.get('/purchase/', function (req, res) {
+router.get('/purchase/', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     Purchase.getAllPurchases(function (err, purchases) {
         if (err) {
             return res.status(400).send(err);
@@ -24,7 +27,7 @@ router.get('/purchase/', function (req, res) {
  * GET /api/purchase/:id
  * use id to return one single purchase
  */
-router.get('/purchase/:id', function (req, res) {
+router.get('/purchase/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Purchase.getPurchaseById(id, function (err, purchase) {
         if (err) {
@@ -38,7 +41,7 @@ router.get('/purchase/:id', function (req, res) {
  * GET /api/purchase/itens/:id
  * use id to return all itens from a single purchase
  */
-router.get('/purchase/items/:id', function (req, res) {
+router.get('/purchase/items/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Purchase.getAllItens(id, function (err, items) {
         if (err) {
@@ -51,7 +54,7 @@ router.get('/purchase/items/:id', function (req, res) {
 /**
  * POST /api/purchase/
  */
-router.post('/purchase/', validator.body(BodyValidation), function (req, res) {
+router.post('/purchase/', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let newPurchase = req.body
     Purchase.addNewPurchase(newPurchase, function (err, purchase) {
         if (err) {
@@ -65,7 +68,7 @@ router.post('/purchase/', validator.body(BodyValidation), function (req, res) {
 /**
  * UPDATE /api/purchase/
  */
-router.put('/purchase/:id', validator.body(BodyValidation), function (req, res) {
+router.put('/purchase/:id', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let updatedPurchase = req.body
     updatedPurchase.id = req.params.id
     Purchase.updatePurchase(updatedPurchase, function (err, purchase) {
@@ -79,7 +82,7 @@ router.put('/purchase/:id', validator.body(BodyValidation), function (req, res) 
 /**
  * DELETE /api/purchase/:id
  */
-router.delete('/purchase/:id', function (req, res) {
+router.delete('/purchase/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Purchase.deletePurchase(id, function (err, purchase) {
         if (err) {

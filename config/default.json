@@ -1,3 +1,4 @@
 {
-    "DBHost": "mongodb://127.0.0.1/inventory_utfpr"
+    "DBHost": "mongodb://127.0.0.1/inventory_utfpr",
+    "secret": "48be68d59c1d7e4e2ddfdbe8d0699ae1bcf188f6"
 }

@@ -2,6 +2,8 @@ process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
 let Requisition = require('../models/requisitionSchema');
+let User = require('../models/userScheme');
+let Admin = require('../models/adminSchema');
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -9,8 +11,26 @@ let server = require('../server');
 let should = chai.should();
 
 chai.use(chaiHttp);
+var token
 
 describe('Items Requisition Route', () => {
+	before((done) => {
+        chai.request(server).post('/api/register').send({
+            email: 'test@test.com',
+            password: 'teste123',
+            name: 'teste'
+        }).end((err, res) => {
+            Admin.addNewAdmin({admin: 'test@test.com'}, (err, user) => {
+                chai.request(server).post('/api/authenticate').send({
+                    email: 'test@test.com',
+                    password: 'teste123',
+                }).end((err, res) => {
+                    token = res.body.token;
+                    done()
+                })
+            })
+        })
+    });
 	beforeEach((done) => {
 		Requisition.remove({}, (err) => {
 			done();
@@ -20,6 +40,7 @@ describe('Items Requisition Route', () => {
 		it('it should GET all the requisition', (done) => {
 			chai.request(server)
 				.get('/api/requisitions')
+				.set("Authorization", token)
 				.end((err, res) => {
 					res.should.have.status(200);
 					res.body.should.be.a('object');
@@ -38,6 +59,7 @@ describe('Items Requisition Route', () => {
 			chai.request(server)
 				.post('/api/requisition')
 				.send(requisition)
+				.set("Authorization", token)
 				.end((err, res) => {
 					res.should.have.status(400);
 					done();
@@ -51,6 +73,7 @@ describe('Items Requisition Route', () => {
 			chai.request(server)
 				.post('/api/requisition')
 				.send(requisition)
+				.set("Authorization", token)
 				.end((err, res) => {
 					res.should.have.status(400);
 					done();
@@ -72,6 +95,7 @@ describe('Items Requisition Route', () => {
 			chai.request(server)
 				.post('/api/requisition')
 				.send(requisition)
+				.set("Authorization", token)
 				.end((err, res) => {
 					res.should.have.status(400);
 					done();
@@ -93,6 +117,7 @@ describe('Items Requisition Route', () => {
 			chai.request(server)
 				.post('/api/requisition')
 				.send(requisition)
+				.set("Authorization", token)
 				.end((err, res) => {
 					res.should.have.status(201);
 					res.body.should.be.a('object');
@@ -124,6 +149,7 @@ describe('Items Requisition Route', () => {
 				chai.request(server)
 					.get('/api/requisition/' + requisition.id)
 					.send(requisition)
+					.set("Authorization", token)
 					.end((err, res) => {
 						res.should.have.status(200);
 						res.body.should.be.a('object');
@@ -167,6 +193,7 @@ describe('Items Requisition Route', () => {
 						}],
 						qtd: 3
 					})
+					.set("Authorization", token)
 					.end((err, res) => {
 						res.should.have.status(200);
 						res.body.should.be.a('object');
@@ -200,6 +227,7 @@ describe('Items Requisition Route', () => {
 			requisition.save((err, requisition) => {
 				chai.request(server)
 					.delete('/api/requisition/' + requisition.id)
+					.set("Authorization", token)
 					.end((err, res) => {
 						res.should.have.status(204);
 						done();
@@ -207,4 +235,11 @@ describe('Items Requisition Route', () => {
 			});
 		});
 	});
+	after(done => {
+        User.remove({}, () => {
+            Admin.remove({}, () => {
+                done()
+            })
+        })
+    })
 });
