@@ -40,6 +40,7 @@ router.post('/register', validator.body(userValidation), function (req, res, nex
 				if (error) {
 					return console.log(error);
 				}
+				console.log(info)
 			});
 		}
 	});
