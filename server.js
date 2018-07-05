@@ -23,6 +23,7 @@ const files = require('./routes/files');
 const equipments = require('./routes/equipments');
 const supplier = require('./routes/supplier');
 const configuration = require('./routes/configuration');
+const email = require('./routes/email');
 
 // --------- db connection ------------
 
@@ -79,6 +80,7 @@ server.use('/api', files);
 server.use('/api', equipments);
 server.use('/api', supplier);
 server.use('/api', configuration);
+server.use('/api', email);
 
 //error handler
 server.use(function (err, _req, res, _next) {

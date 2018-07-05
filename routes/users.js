@@ -16,6 +16,7 @@ const { LoginSchema, UserSchema, AdminSchema } = require('../utils/validatorSche
 const userValidation = Joi.object(UserSchema);
 const loginValidation = Joi.object(LoginSchema);
 const adminValidation = Joi.object(AdminSchema);
+const { transporter, mail } = require("../utils/sendEmail");
 
 // REGISTER
 router.post('/register', validator.body(userValidation), function (req, res, next) {
@@ -30,7 +31,16 @@ router.post('/register', validator.body(userValidation), function (req, res, nex
 			res.status(400).json({ success: false, msg: 'Failed to register user' });
 		} else {
 			res.status(201).json({ success: true, msg: 'user registered' });
-
+			transporter.sendMail({
+				from: '"No Reply" <'+ mail +'>', // sender address
+				to: newUser.email, // list of receivers
+				subject: "Nova conta", // Subject line
+				text: "Ola " + newUser.name + "\n\nObrigado se cadastrar no sistema de compras da UTFPR-CM\n\nEsperamos que tenha uma boa experiencia!", // plain text body
+			}, (error, info) => {
+				if (error) {
+					return console.log(error);
+				}
+			});
 		}
 	});
 });
@@ -116,6 +126,16 @@ router.post('/admin', validator.body(adminValidation), function (req, res) {
 			return res.status(400).send(err);
 		}
 		res.status(201).json({ success: true, msg: 'Admin added', admin: admin });
+		transporter.sendMail({
+			from: '"No Reply" <'+ mail +'>', // sender address
+			to: newAdmin.admin, // list of receivers
+			subject: "Administrador", // Subject line
+			text: "Ola,\n\nVocê foi adicionado a lista de usuarios administradores do sistema de compras da UTFPR-CM.", // plain text body
+		}, (error, info) => {
+			if (error) {
+				return console.log(error);
+			}
+		});
 	})
 });
 

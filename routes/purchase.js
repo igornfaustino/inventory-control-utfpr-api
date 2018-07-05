@@ -61,6 +61,9 @@ router.post('/purchase/', validator.body(BodyValidation), passport.authenticate(
             //res.json(err);
             return res.status(400).json({ success: false, msg: 'Failed to add purchase', err: err });
         }
+        for (item in newPurchase.requisitionItems) {
+            console.log(item)
+        }
         res.status(201).json({ success: true, msg: 'Purchase added', purchase: purchase });
     });
 })
@@ -68,13 +71,27 @@ router.post('/purchase/', validator.body(BodyValidation), passport.authenticate(
 /**
  * UPDATE /api/purchase/
  */
-router.put('/purchase/:id', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
+router.put('/purchase/:id', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, async function (req, res) {
     let updatedPurchase = req.body
     updatedPurchase.id = req.params.id
+    let cont = 0
+    console.log( updatedPurchase.requisitionItems)
+    try {
+        await updatedPurchase.requisitionItems.forEach(element => {
+            console.log(element)
+            element.notify = true
+            cont += 1
+        })
+    } catch (ex) {
+
+    }
+    console.log(cont)
+    console.log( updatedPurchase.requisitionItems)
     Purchase.updatePurchase(updatedPurchase, function (err, purchase) {
         if (err) {
             return res.status(400).json({ success: false, msg: 'Failed to update purchase' });
         }
+        console.log(purchase)
         res.status(200).json({ success: true, msg: 'Purchase updated', purchase: purchase });
     });
 });

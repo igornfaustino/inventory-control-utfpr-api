@@ -8,6 +8,8 @@ const moment = require('moment');
 const passport = require('passport');
 const { isAdmin } = require("../middleWares/isAdminMW");
 
+const { transporter } = require("../utils/sendEmail")
+
 const BodyValidation = Joi.object(ItemsRequisitionSchema);
 
 moment().locale('pt-br');
@@ -16,7 +18,7 @@ moment().locale('pt-br');
  * GET /api/requisitions/:id
  * use id to return one single requisition
  */
-router.get('/requisition/:id',passport.authenticate('jwt', { session: false }), function (req, res) {
+router.get('/requisition/:id', passport.authenticate('jwt', { session: false }), function (req, res) {
 	const id = req.params.id;
 	Requisition.getRequisitionById(id, function (err, requisition) {
 		if (err) {
@@ -30,7 +32,7 @@ router.get('/requisition/:id',passport.authenticate('jwt', { session: false }), 
  * GET /api/requisitions/
  * return all requisitions
  */
-router.get('/requisitions/',passport.authenticate('jwt', { session: false }), function (req, res) {
+router.get('/requisitions/', passport.authenticate('jwt', { session: false }), function (req, res) {
 	Requisition.getAllRequisition(function (err, requisitions) {
 		if (err) {
 			return res.status(400).send(err);
@@ -54,7 +56,7 @@ router.get('/requisitions/',passport.authenticate('jwt', { session: false }), fu
  *		"qtd": 3
  * }
  */
-router.post('/requisition/', validator.body(BodyValidation),passport.authenticate('jwt', { session: false }), function (req, res) {
+router.post('/requisition/', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), function (req, res) {
 	let newRequisition = req.body
 	if (!req.body.date) {
 		newRequisition.date = moment().format('L')
@@ -62,6 +64,7 @@ router.post('/requisition/', validator.body(BodyValidation),passport.authenticat
 	if (!req.body.status) {
 		newRequisition.status = 'Aberto'
 	}
+	newRequisition.requesterId = req.user._id
 	Requisition.addNewRequisition(newRequisition, function (err, requisition) {
 		if (err) {
 			return res.status(400).json({ success: false, msg: 'Failed to add requisition', err: err });
@@ -74,7 +77,7 @@ router.post('/requisition/', validator.body(BodyValidation),passport.authenticat
  * PUT /api/requisition
  * body
  */
-router.put('/requisition/:id', validator.body(BodyValidation),passport.authenticate('jwt', { session: false }), isAdmin, function (req, res, next) {
+router.put('/requisition/:id', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res, next) {
 	let updatedRequisition = req.body;
 	updatedRequisition._id = req.params.id;
 
@@ -83,6 +86,17 @@ router.put('/requisition/:id', validator.body(BodyValidation),passport.authentic
 			return res.status(400).json({ success: false, msg: 'Failed to update requisition' });
 		}
 		res.status(200).json({ success: true, msg: 'requisition updated', requisition: requisition });
+		transporter.sendMail({
+			from: '"No Reply" <' + mail + '>', // sender address
+			to: requisition.requesterId.email, // list of receivers
+			subject: "Mudança na sua requisição", // Subject line
+			text: "Sua requisição foi modificada com a seguinte justificativa: " + updatedRequisition.changeJustification, // plain text body
+		}, (error, info) => {
+			if (error) {
+				return console.log(error);
+			}
+			console.log('Message %s sent: %s', info.messageId, info.response);
+		});
 	});
 });
 
