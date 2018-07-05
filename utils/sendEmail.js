@@ -1,8 +1,8 @@
 const nodemailer = require('nodemailer');
 const config = require('../config/emailConfig')
 
-const transporter = nodemailer.createTransport(config.nodemailerConfig);
+const transporter = nodemailer.createTransport(config);
 module.exports = {
 	transporter,
-	mail: config.mail
+	mail: 'faustino.dev@gmail.com'
 }

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const { transporter } = require("../utils/sendEmail");
+const { transporter, mail } = require("../utils/sendEmail");
 const Requisition = require('../models/requisitionSchema');
 
 router.post('/email/send', function (req, res) {
