@@ -80,7 +80,7 @@ router.post('/requisition/', validator.body(BodyValidation), passport.authentica
 router.put('/requisition/:id', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res, next) {
 	let updatedRequisition = req.body;
 	updatedRequisition._id = req.params.id;
-
+	
 	Requisition.updateRequisition(updatedRequisition, function (err, requisition) {
 		if (err) {
 			return res.status(400).json({ success: false, msg: 'Failed to update requisition' });

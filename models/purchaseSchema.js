@@ -26,7 +26,7 @@ const PurchaseSchema = mongoose.Schema({
     requisitionItems: [{
         item: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
         itemSupplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' },
-        notify: Boolean
+        qtdReceived: Number
     }],
 });
 

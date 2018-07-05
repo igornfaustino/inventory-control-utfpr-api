@@ -50,6 +50,7 @@ const PurchaseRequisitionSchema = {
     requisitionItems: Joi.array().items(Joi.object().keys({
         item: Joi.any(),
         itemSupplier: Joi.any(),
+        qtdReceived: Joi.number()
     })).required()
 };
 
