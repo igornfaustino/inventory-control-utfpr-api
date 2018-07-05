@@ -8,7 +8,7 @@ const moment = require('moment');
 const passport = require('passport');
 const { isAdmin } = require("../middleWares/isAdminMW");
 
-const { transporter } = require("../utils/sendEmail")
+const { transporter, mail } = require("../utils/sendEmail")
 
 const BodyValidation = Joi.object(ItemsRequisitionSchema);
 
