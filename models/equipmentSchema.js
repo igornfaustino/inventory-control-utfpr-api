@@ -11,6 +11,7 @@ const LocationHistory = require('./locationHistorySchema')
  * - location: E102, etc.
  * - solicitor: who solicited the equipment
  * - origin: origem
+ * - components: list of equipments that is included in equipment.
  * The rest is self explanatory.
  */
 const EquipmentSchema = mongoose.Schema({
@@ -24,18 +25,19 @@ const EquipmentSchema = mongoose.Schema({
     equipmentType: String,
     // quantity: Number,
     equipmentState: String,
-    locationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LocationHistory' }]
+    locationHistory: [{ type: mongoose.Schema.Types.ObjectId, ref: 'LocationHistory' }],
+    components: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Equipment' }]
 });
 
 module.exports = mongoose.model('Equipment', EquipmentSchema);
 const Equipment = mongoose.model('Equipment', EquipmentSchema);
 
 module.exports.getEquipmentById = function (id, callback) {
-    Equipment.findById(id).populate('locationHistory').exec(callback);
+    Equipment.findById(id).populate('locationHistory').populate('components').exec(callback);
 }
 
 module.exports.getAllEquipments = function (callback) {
-    Equipment.find().populate('locationHistory').exec(callback);
+    Equipment.find().populate('locationHistory').populate('components').exec(callback);
 }
 
 module.exports.updateEquipment = function (updateEquipment, callback) {
@@ -50,6 +52,7 @@ module.exports.updateEquipment = function (updateEquipment, callback) {
             "origin": updateEquipment.origin,
             "equipmentState": updateEquipment.equipmentState,
             "equipmentType": updateEquipment.equipmentType,
+            "components": updateEquipment.components,
         }
     }).exec(callback);
 }

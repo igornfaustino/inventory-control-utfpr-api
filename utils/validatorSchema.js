@@ -74,7 +74,8 @@ const EquipmentSchema = {
     origin: Joi.string(),
     equipmentType: Joi.string(),
     equipmentState: Joi.string(),
-    locationHistory: Joi.array().items(Joi.any())
+    locationHistory: Joi.array().items(Joi.any()),
+    components: Joi.array().items(Joi.any()),
 };
 
 const StatusSchema = {
