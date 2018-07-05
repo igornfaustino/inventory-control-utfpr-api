@@ -1,3 +1,4 @@
 {
-    "DBHost": "mongodb://mongo/inventory_utfpr"
+    "DBHost": "mongodb://mongo/inventory_utfpr",
+    "secret": "48be68d59c1d7e4e2ddfdbe8d0699ae1bcf188f6"
 }

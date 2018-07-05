@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
 const busboyBodyParser = require('busboy-body-parser');
+const passport = require('passport')
 const cookieParser = require('cookie-parser');
 const cors = require('cors');
 const Grid = require('gridfs-stream');
@@ -22,6 +23,7 @@ const files = require('./routes/files');
 const equipments = require('./routes/equipments');
 const supplier = require('./routes/supplier');
 const configuration = require('./routes/configuration');
+const email = require('./routes/email');
 
 // --------- db connection ------------
 
@@ -63,6 +65,12 @@ server.use(cookieParser());
 server.use(methodOverride('_method'));
 server.use(cors());
 
+// Passport MW
+server.use(passport.initialize());
+server.use(passport.session());
+
+require('./config/passport.js')(passport);
+
 // use routers
 server.use('/api', index);
 server.use('/api', users);
@@ -72,9 +80,10 @@ server.use('/api', files);
 server.use('/api', equipments);
 server.use('/api', supplier);
 server.use('/api', configuration);
+server.use('/api', email);
 
 //error handler
-server.use(function (err, req, res, next) {
+server.use(function (err, _req, res, _next) {
 	if (err.isBoom) {
 		return res.status(err.output.statusCode).json(err.output.payload);
 	}

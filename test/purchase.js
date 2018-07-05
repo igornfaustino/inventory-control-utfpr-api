@@ -2,6 +2,8 @@ process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
 let Purchase = require('../models/purchaseSchema');
+let User = require('../models/userScheme');
+let Admin = require('../models/adminSchema');
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -9,8 +11,26 @@ let server = require('../server');
 let should = chai.should();
 
 chai.use(chaiHttp);
+var token
 
 describe('Purchase Route', () => {
+    before((done) => {
+        chai.request(server).post('/api/register').send({
+            email: 'test@test.com',
+            password: 'teste123',
+            name: 'teste'
+        }).end((err, res) => {
+            Admin.addNewAdmin({admin: 'test@test.com'}, (err, user) => {
+                chai.request(server).post('/api/authenticate').send({
+                    email: 'test@test.com',
+                    password: 'teste123',
+                }).end((err, res) => {
+                    token = res.body.token;
+                    done()
+                })
+            })
+        })
+    });
     beforeEach((done) => {
         Purchase.remove({}, (err) => {
             done();
@@ -20,6 +40,7 @@ describe('Purchase Route', () => {
         it('it should GET all the purchase', (done) => {
             chai.request(server)
                 .get('/api/purchase')
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -41,6 +62,7 @@ describe('Purchase Route', () => {
             chai.request(server)
                 .post('/api/purchase')
                 .send(purchase)
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -58,6 +80,7 @@ describe('Purchase Route', () => {
             chai.request(server)
                 .post('/api/purchase')
                 .send(purchase)
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -77,6 +100,7 @@ describe('Purchase Route', () => {
             chai.request(server)
                 .post('/api/purchase')
                 .send(purchase)
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -95,8 +119,9 @@ describe('Purchase Route', () => {
             chai.request(server)
                 .post('/api/purchase')
                 .send(purchase)
+                .set("Authorization", token)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(201);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(true);
                     done();
@@ -118,6 +143,7 @@ describe('Purchase Route', () => {
                 chai.request(server)
                     .get('/api/purchase/' + purchase.id)
                     .send(purchase)
+                    .set("Authorization", token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -150,6 +176,7 @@ describe('Purchase Route', () => {
                         "requester": "zanone",
                         "requisitionItems": []
                     })
+                    .set("Authorization", token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -174,14 +201,19 @@ describe('Purchase Route', () => {
             purchase.save((err, purchase) => {
                 chai.request(server)
                     .delete('/api/purchase/' + purchase.id)
+                    .set("Authorization", token)
                     .end((err, res) => {
-                        res.should.have.status(200);
-                        res.body.should.be.a('object');
-                        res.body.should.have.property('msg').eql('Purchase deleted');
-                        res.body.should.have.property('success').eql(true);
+                        res.should.have.status(204);
                         done();
                     });
             });
         });
     });
+    after(done => {
+        User.remove({}, () => {
+            Admin.remove({}, () => {
+                done()
+            })
+        })
+    })
 });

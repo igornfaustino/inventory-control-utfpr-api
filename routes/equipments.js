@@ -5,6 +5,8 @@ const Joi = require('joi');
 const validator = require('express-joi-validation')({});
 const moment = require('moment')
 const { EquipmentSchema, EquipmentHitorySchema } = require('../utils/validatorSchema');
+const passport = require('passport');
+const { isAdmin } = require("../middleWares/isAdminMW");
 
 const BodyValidation = Joi.object(EquipmentSchema);
 
@@ -14,12 +16,12 @@ const BodyValidationHistory = Joi.object(EquipmentHitorySchema);
  * GET /api/equipments/
  * return all equipments
  */
-router.get('/equipments', function (req, res) {
+router.get('/equipments', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     Equipments.getAllEquipments(function (err, equipments) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, equipments: equipments });
+        res.status(200).json({ success: true, equipments: equipments });
     });
 });
 
@@ -27,13 +29,13 @@ router.get('/equipments', function (req, res) {
  * GET /api/equipment/:id
  * use id to return one single equipment
  */
-router.get('/equipment/:id', function (req, res) {
+router.get('/equipment/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Equipments.getEquipmentById(id, function (err, equipment) {
         if (err) {
             return res.status(400).send(err);
         }
-        res.json({ success: true, equipment: equipment });
+        res.status(200).json({ success: true, equipment: equipment });
     });
 });
 
@@ -41,7 +43,7 @@ router.get('/equipment/:id', function (req, res) {
 /**
  * POST /api/equipment/
  */
-router.post('/equipment/', validator.body(BodyValidation), function (req, res) {
+router.post('/equipment/', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
 
     let newEquipment = req.body
     Equipments.addNewEquipment(newEquipment, function (err, equipment) {
@@ -49,38 +51,38 @@ router.post('/equipment/', validator.body(BodyValidation), function (req, res) {
             //res.json(err);
             return res.json({ success: false, msg: 'Failed to add equipment', err: err });
         }
-        res.json({ success: true, msg: 'equipment added', equipment: equipment });
+        res.status(201).json({ success: true, msg: 'equipment added', equipment: equipment });
     });
 })
 
 /**
  * UPDATE /api/equipment/
  */
-router.put('/equipment/:id', validator.body(BodyValidation), function (req, res) {
+router.put('/equipment/:id', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let updatedEquipment = req.body
     updatedEquipment._id = req.params.id
     Equipments.updateEquipment(updatedEquipment, function (err, equipment) {
         if (err) {
             return res.json({ success: false, msg: 'Failed to update equipment' });
         }
-        res.json({ success: true, msg: 'equipment updated', result: equipment });
+        res.status(200).json({ success: true, msg: 'equipment updated', result: equipment });
     });
 });
 
 /**
  * DELETE /api/equipment/:id
  */
-router.delete('/equipment/:id', function (req, res) {
+router.delete('/equipment/:id', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     const id = req.params.id;
     Equipments.deleteEquipment(id, function (err, equipment) {
         if (err) {
             return res.json({ success: false, msg: 'Failed to delete equipment' });
         }
-        res.json({ success: true, msg: 'Equipment deleted', equipment: equipment })
+        res.status(204).send()
     });
 });
 
-router.post('/equipments/:id/move', validator.body(BodyValidationHistory), function (req, res) {
+router.post('/equipments/:id/move', validator.body(BodyValidationHistory), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let newLocation = req.body;
     let equipmentId = req.params.id;
     console.log(equipmentId)

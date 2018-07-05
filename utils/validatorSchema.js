@@ -30,7 +30,7 @@ const ItemsRequisitionSchema = {
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),
     justification: Joi.string().regex(/^[^%<>^$]+$/),
     priceJustification: Joi.string().regex(/^[^%<>^$]+$/),
-    qtd: Joi.number().required(),
+    qtd: Joi.number(),
     quotation: Joi.array().items(Joi.object().keys(QuotationSchema)),
     date: Joi.date(),
     status: Joi.string(),
@@ -50,6 +50,7 @@ const PurchaseRequisitionSchema = {
     requisitionItems: Joi.array().items(Joi.object().keys({
         item: Joi.any(),
         itemSupplier: Joi.any(),
+        qtdReceived: Joi.number()
     })).required()
 };
 
@@ -66,6 +67,7 @@ const EquipmentSchema = {
     _id: Joi.any(),
     __v: Joi.any(),
     siorg: Joi.string(),
+    isPermanent: Joi.any(),
     patrimonyNumber: Joi.any(),
     buyer: Joi.string().required(),
     solicitor: Joi.string().required(),
@@ -73,7 +75,8 @@ const EquipmentSchema = {
     origin: Joi.string(),
     equipmentType: Joi.string(),
     equipmentState: Joi.string(),
-    locationHistory: Joi.array().items(Joi.any())
+    locationHistory: Joi.array().items(Joi.any()),
+    components: Joi.array().items(Joi.any()),
 };
 
 const StatusSchema = {
@@ -84,6 +87,33 @@ const TypeSchema = {
     type: Joi.string()
 }
 
+const SectorSchema = {
+    sector: Joi.string()
+}
+
+const UGRSchema = {
+    ugr: Joi.string()
+}
+
+const ManagementSchema = {
+    management: Joi.string()
+}
+
+const AdminSchema = {
+    admin: Joi.string()
+}
+
+const UserSchema = {
+    email: Joi.string().regex(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).required(),
+    name: Joi.string().required(),
+    password: Joi.string().min(6).required()
+}
+
+const LoginSchema = {
+    email: Joi.string().regex(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/).required(),
+    password: Joi.string().min(6).required()
+}
+
 module.exports = {
     QuotationSchema,
     SupplierSchema,
@@ -92,5 +122,11 @@ module.exports = {
     EquipmentSchema,
     EquipmentHitorySchema,
     StatusSchema,
-    TypeSchema
+    TypeSchema,
+    SectorSchema,
+    UGRSchema,
+    ManagementSchema,
+    AdminSchema,
+    UserSchema,
+    LoginSchema
 }

@@ -2,6 +2,8 @@ process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
 let Supplier = require('../models/supplierSchema');
+let User = require('../models/userScheme');
+let Admin = require('../models/adminSchema');
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -9,8 +11,26 @@ let server = require('../server');
 let should = chai.should();
 
 chai.use(chaiHttp);
+var token
 
 describe('Equipents Route', () => {
+    before((done) => {
+        chai.request(server).post('/api/register').send({
+            email: 'test@test.com',
+            password: 'teste123',
+            name: 'teste'
+        }).end((err, res) => {
+            Admin.addNewAdmin({admin: 'test@test.com'}, (err, user) => {
+                chai.request(server).post('/api/authenticate').send({
+                    email: 'test@test.com',
+                    password: 'teste123',
+                }).end((err, res) => {
+                    token = res.body.token;
+                    done()
+                })
+            })
+        })
+    });
     beforeEach((done) => {
         Supplier.remove({}, (err) => {
             done();
@@ -20,6 +40,7 @@ describe('Equipents Route', () => {
         it('it should GET all the suppliers', (done) => {
             chai.request(server)
                 .get('/api/suppliers')
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(200);
                     res.body.should.be.a('object');
@@ -45,6 +66,7 @@ describe('Equipents Route', () => {
             chai.request(server)
                 .post('/api/supplier')
                 .send(supplier)
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -66,6 +88,7 @@ describe('Equipents Route', () => {
             chai.request(server)
                 .post('/api/supplier')
                 .send(supplier)
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -89,6 +112,7 @@ describe('Equipents Route', () => {
             chai.request(server)
                 .post('/api/supplier')
                 .send(supplier)
+                .set("Authorization", token)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
@@ -110,8 +134,9 @@ describe('Equipents Route', () => {
             chai.request(server)
                 .post('/api/supplier')
                 .send(supplier)
+                .set("Authorization", token)
                 .end((err, res) => {
-                    res.should.have.status(200);
+                    res.should.have.status(201);
                     res.body.should.be.a('object');
                     res.body.should.have.property('success').eql(true);
                     done();
@@ -136,6 +161,7 @@ describe('Equipents Route', () => {
                 chai.request(server)
                     .get('/api/supplier/' + supplier.id)
                     .send(supplier)
+                    .set("Authorization", token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -176,6 +202,7 @@ describe('Equipents Route', () => {
                             "country": "Brasil"
                         }
                     })
+                    .set("Authorization", token)
                     .end((err, res) => {
                         res.should.have.status(200);
                         res.body.should.be.a('object');
@@ -206,14 +233,19 @@ describe('Equipents Route', () => {
             supplier.save((err, supplier) => {
                 chai.request(server)
                     .delete('/api/supplier/' + supplier.id)
+                    .set("Authorization", token)
                     .end((err, res) => {
-                        res.should.have.status(200);
-                        res.body.should.be.a('object');
-                        res.body.should.have.property('msg').eql('supplier deleted');
-                        res.body.should.have.property('success').eql(true);
+                        res.should.have.status(204);
                         done();
                     });
             });
         });
     });
+    after(done => {
+        User.remove({}, () => {
+            Admin.remove({}, () => {
+                done()
+            })
+        })
+    })
 });

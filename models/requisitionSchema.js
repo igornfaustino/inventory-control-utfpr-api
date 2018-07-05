@@ -26,10 +26,10 @@ const RequisitionSchema = mongoose.Schema({
 	itemType: String,
 	priceJustification: String,
 	qtd: { type: Number, require: true },
-	date: Date,
+	// date: Date,
 	status: String,
-	history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'RequisitionHistory' }]
-	// requesterId: { type: String, require: true }
+	history: [{ type: mongoose.Schema.Types.ObjectId, ref: 'RequisitionHistory' }],
+	requesterId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true }
 });
 
 module.exports = mongoose.model('Requisition', RequisitionSchema);
@@ -41,16 +41,16 @@ const Requisition = mongoose.model('Requisition', RequisitionSchema);
  * @param {function(err, requisition)} callback callback function
  */
 module.exports.getRequisitionById = function (id, callback) {
-	Requisition.findById(id).populate('history').exec(callback);
+	Requisition.findById(id).populate('history').populate('requesterId').exec(callback);
 };
 
 module.exports.getAllRequisition = function (callback) {
-	Requisition.find().populate('history').exec(callback);
+	Requisition.find().populate('history').populate('requesterId').exec(callback);
 };
 
 module.exports.addNewRequisition = function (newRequisition, callback) {
 	// saves the creation on history
-	newRequisition.date = moment();
+	// newRequisition.date = moment();
 	newRequisition.changeJustification = "Criação da requisição"
 	RequisitionHistory.addNewHistory(newRequisition, (err, history) => {
 		if (err) {

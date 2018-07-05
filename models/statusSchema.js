@@ -14,3 +14,7 @@ module.exports.addNewStatus = function (newStatus, callback) {
 module.exports.getAllStatus = function (callback) {
     Status.find(callback)
 }
+
+module.exports.deleteStatus = function (statusId, callback) {
+    Status.findById(statusId).remove(callback);
+}
