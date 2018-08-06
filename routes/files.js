@@ -15,7 +15,7 @@ mongoose.connection.once('open', function () {
 });
 
 router.post('/file/', passport.authenticate('jwt', { session: false }), upload.single('file'), function (req, res) {
-    res.status(201).json({ fileId: req.file.filename });
+    res.status(201).json({ fileId: req.file.filename, file:req.file });
 })
 
 router.get('/file/:filename', passport.authenticate('jwt', { session: false }), function (req, res) {

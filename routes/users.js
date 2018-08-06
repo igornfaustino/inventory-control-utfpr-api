@@ -7,74 +7,73 @@ const Admin = require('../models/adminSchema');
 // Login
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
-const { isAdmin, isUserAdmin } = require("../middleWares/isAdminMW");
+const {isAdmin, isUserAdmin} = require("../middleWares/isAdminMW");
 
 // Validation
 const Joi = require('joi');
 const validator = require('express-joi-validation')({});
-const { LoginSchema, UserSchema, AdminSchema } = require('../utils/validatorSchema');
+const {LoginSchema, UserSchema, AdminSchema} = require('../utils/validatorSchema');
 const userValidation = Joi.object(UserSchema);
 const loginValidation = Joi.object(LoginSchema);
 const adminValidation = Joi.object(AdminSchema);
-const { transporter, mail } = require("../utils/sendEmail");
+const {transporter, mail} = require("../utils/sendEmail");
 
 // REGISTER
 router.post('/register', validator.body(userValidation), function (req, res, next) {
-	let newUser = new User({
-		name: req.body.name,
-		email: req.body.email,
-		password: req.body.password
-	});
+    let newUser = new User({
+        name: req.body.name,
+        email: req.body.email,
+        password: req.body.password
+    });
 
-	User.addUser(newUser, function (err, user) {
-		if (err) {
-			res.status(400).json({ success: false, msg: 'Failed to register user' });
-		} else {
-			res.status(201).json({ success: true, msg: 'user registered' });
-			transporter.sendMail({
-				from: '"No Reply" <'+ mail +'>', // sender address
-				to: newUser.email, // list of receivers
-				subject: "Nova conta", // Subject line
-				text: "Ola " + newUser.name + "\n\nObrigado se cadastrar no sistema de compras da UTFPR-CM\n\nEsperamos que tenha uma boa experiencia!", // plain text body
-			}, (error, info) => {
-				if (error) {
-					return console.log(error);
-				}
-				console.log(info)
-			});
-		}
-	});
+    User.addUser(newUser, function (err, user) {
+        if (err) {
+            res.status(400).json({success: false, msg: 'Failed to register user'});
+        } else {
+            res.status(201).json({success: true, msg: 'user registered'});
+            transporter.sendMail({
+                from: '"No Reply" <' + mail + '>', // sender address
+                to: newUser.email, // list of receivers
+                subject: "Nova conta", // Subject line
+                text: "Ola " + newUser.name + "\n\nObrigado se cadastrar no sistema de compras da UTFPR-CM\n\nEsperamos que tenha uma boa experiencia!", // plain text body
+            }, (error, info) => {
+                if (error) {
+                    return console.log(error);
+                }
+                console.log(info)
+            });
+        }
+    });
 });
 
 // AUTHENTICATE
 router.post('/authenticate', validator.body(loginValidation), isUserAdmin, function (req, res, next) {
-	email = req.body.email;
-	password = req.body.password;
+    email = req.body.email;
+    password = req.body.password;
 
-	User.getUserByEmail(email, function (err, user) {
-		if (err) throw err;
-		if (!user) {
-			return res.json({ success: false, msg: 'User not found' });
-		}
-		User.comparePassword(password, user.password, function (err, isMatch) {
-			if (isMatch) {
-				user.password = undefined;
-				const token = jwt.sign(user.toJSON(), config.secret);
-				res.json({
-					success: true,
-					token: "bearer " + token,
-					user: {
-						id: user._id,
-						name: user.name,
-						email: user.email,
-						admin: req.admin
-					}
-				});
-			} else {
-				return res.json({ succes: false, msg: 'Wrong password' });
-			}
-		});
-	});
+    User.getUserByEmail(email, function (err, user) {
+        if (err) throw err;
+        if (!user) {
+            return res.json({success: false, msg: 'Usuario incorreto'});
+        }
+        User.comparePassword(password, user.password, function (err, isMatch) {
+            if (isMatch) {
+                user.password = undefined;
+                res.json({
+                    success: true,
+                    token: "bearer " + jwt.sign(user.toJSON(), config.secret),
+                    user: {
+                        id: user._id,
+                        name: user.name,
+                        email: user.email,
+                        admin: req.admin
+                    }
+                });
+            } else {
+                return res.json({succes: false, msg: 'Senha incorreta'});
+            }
+        });
+    });
 });
 
 // // UPDATE USER
@@ -103,54 +102,77 @@ router.post('/authenticate', validator.body(loginValidation), isUserAdmin, funct
 // });
 
 // PROFILE
-router.get('/profile', passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
-	res.json({ user: req.user });
+router.get('/profile', passport.authenticate('jwt', {session: false}), isAdmin, function (req, res) {
+    res.json({user: req.user});
 })
 
 // Admin Functions
 
 // GET all type of itens.
 router.get('/admin', function (req, res) {
-	Admin.getAllAdmin((err, admin) => {
-		if (err) {
-			res.status(400).send(err);
-		}
-		res.status(200).json({ success: true, admin: admin })
-	})
+    Admin.getAllAdmin((err, admin) => {
+        if (err) {
+            res.status(400).send(err);
+        }
+        res.status(200).json({success: true, admin: admin})
+    })
+});
+
+//GET all user
+router.get('/user', async function (req, res) {
+    let list=[];
+    await User.getAllUser((err, users) => {
+        if (err) {
+            res.status(400).send(err);
+        };
+        users.forEach(user=>{
+            Admin.getAdmin(user.email, (err, admin) => {
+                list.push({
+                    _id: user._id,
+                    name: user.name,
+                    email: user.email,
+                    admin: !!admin
+                })
+            })
+        })
+    });
+    setTimeout(()=>{
+        res.status(200).json({success: true, users: list});
+    },200)
 });
 
 // add new Admin
 router.post('/admin', validator.body(adminValidation), function (req, res) {
-	let newAdmin = req.body;
-	Admin.addNewAdmin(newAdmin, (err, admin) => {
-		if (err) {
-			return res.status(400).send(err);
-		}
-		res.status(201).json({ success: true, msg: 'Admin added', admin: admin });
-		transporter.sendMail({
-			from: '"No Reply" <'+ mail +'>', // sender address
-			to: newAdmin.admin, // list of receivers
-			subject: "Administrador", // Subject line
-			text: "Ola,\n\nVocê foi adicionado a lista de usuarios administradores do sistema de compras da UTFPR-CM.", // plain text body
-		}, (error, info) => {
-			if (error) {
-				return console.log(error);
-			}
-		});
-	})
+    let newAdmin = req.body;
+    Admin.addNewAdmin(newAdmin, (err, admin) => {
+        if (err) {
+            return res.status(400).send(err);
+        }
+        res.status(201).json({success: true, msg: 'Admin added', admin: admin});
+        transporter.sendMail({
+            from: '"No Reply" <' + mail + '>', // sender address
+            to: newAdmin.admin, // list of receivers
+            subject: "Administrador", // Subject line
+            text: "Ola,\n\nVocê foi adicionado a lista de usuarios administradores do sistema de compras da UTFPR-CM.", // plain text body
+        }, (error, info) => {
+            if (error) {
+                return console.log(error);
+            }
+        });
+    })
 });
 
 /**
  * DELETE /api/equipment/:id
  */
 router.delete('/admin/:id', function (req, res) {
-	const id = req.params.id;
-	Admin.deleteAdmin(id, function (err) {
-		if (err) {
-			return res.json({ success: false, msg: 'Failed to delete Admin' });
-		}
-		res.status(204).send()
-	});
+    const id = req.params.id;
+    Admin.deleteAdmin(id, function (err) {
+        if (err) {
+            return res.json({success: false, msg: 'Failed to delete Admin'});
+        }
+        res.status(204).send()
+    });
 });
 
 module.exports = router;

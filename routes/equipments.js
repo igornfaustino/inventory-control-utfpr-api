@@ -58,9 +58,8 @@ router.post('/equipment/', validator.body(BodyValidation), passport.authenticate
 /**
  * UPDATE /api/equipment/
  */
-router.put('/equipment/:id', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
+router.put('/equipment/', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let updatedEquipment = req.body
-    updatedEquipment._id = req.params.id
     Equipments.updateEquipment(updatedEquipment, function (err, equipment) {
         if (err) {
             return res.json({ success: false, msg: 'Failed to update equipment' });

@@ -28,12 +28,14 @@ const ItemsRequisitionSchema = {
     itemType: Joi.string(),
     __v: Joi.any(),
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),
-    justification: Joi.string().regex(/^[^%<>^$]+$/),
+    justification: Joi.string().regex(/^[^%<>^$]+$/).required(),
     priceJustification: Joi.string().regex(/^[^%<>^$]+$/),
-    qtd: Joi.number(),
+    qtd: Joi.number().required(),
     quotation: Joi.array().items(Joi.object().keys(QuotationSchema)),
     date: Joi.date(),
+    history: Joi.any(),
     status: Joi.string(),
+    requesterId: Joi.any(),
     changeJustification: Joi.string()
 };
 
@@ -50,7 +52,8 @@ const PurchaseRequisitionSchema = {
     requisitionItems: Joi.array().items(Joi.object().keys({
         item: Joi.any(),
         itemSupplier: Joi.any(),
-        qtdReceived: Joi.number()
+        qtdReceived: Joi.number(),
+        _id: Joi.any(),
     })).required()
 };
 
@@ -69,10 +72,11 @@ const EquipmentSchema = {
     siorg: Joi.string(),
     isPermanent: Joi.any(),
     patrimonyNumber: Joi.any(),
-    buyer: Joi.string().required(),
-    solicitor: Joi.string().required(),
+    buyer: Joi.any().required(),
+    solicitor: Joi.any().required(),
     description: Joi.string().regex(/^[^%<>^$]+$/).required(),
     origin: Joi.string(),
+    quantity: Joi.string(),
     equipmentType: Joi.string(),
     equipmentState: Joi.string(),
     locationHistory: Joi.array().items(Joi.any()),

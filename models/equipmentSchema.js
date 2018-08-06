@@ -18,8 +18,8 @@ const EquipmentSchema = mongoose.Schema({
     siorg: String,
     isPermanent: Boolean,
     patrimonyNumber: String,
-    buyer: String,
-    solicitor: String,
+    buyer: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
+    solicitor: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
     description: String,
     origin: String,
     equipmentType: String,
@@ -33,11 +33,11 @@ module.exports = mongoose.model('Equipment', EquipmentSchema);
 const Equipment = mongoose.model('Equipment', EquipmentSchema);
 
 module.exports.getEquipmentById = function (id, callback) {
-    Equipment.findById(id).populate('locationHistory').populate('components').exec(callback);
+    Equipment.findById(id).populate('locationHistory').populate('components').populate('buyer').populate('solicitor').exec(callback);
 }
 
 module.exports.getAllEquipments = function (callback) {
-    Equipment.find().populate('locationHistory').populate('components').exec(callback);
+    Equipment.find().populate('locationHistory').populate('components').populate('buyer').populate('solicitor').exec(callback);
 }
 
 module.exports.updateEquipment = function (updateEquipment, callback) {

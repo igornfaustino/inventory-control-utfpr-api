@@ -56,6 +56,8 @@ router.get('/purchase/items/:id', passport.authenticate('jwt', { session: false 
  */
 router.post('/purchase/', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, function (req, res) {
     let newPurchase = req.body
+    console.log(req.user)
+
     Purchase.addNewPurchase(newPurchase, function (err, purchase) {
         if (err) {
             //res.json(err);
@@ -71,9 +73,9 @@ router.post('/purchase/', validator.body(BodyValidation), passport.authenticate(
 /**
  * UPDATE /api/purchase/
  */
-router.put('/purchase/:id', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, async function (req, res) {
+router.put('/purchase/', validator.body(BodyValidation), passport.authenticate('jwt', { session: false }), isAdmin, async function (req, res) {
     let updatedPurchase = req.body
-    updatedPurchase.id = req.params.id
+    // updatedPurchase._id = req.params.id
     let cont = 0
     console.log( updatedPurchase.requisitionItems)
     try {

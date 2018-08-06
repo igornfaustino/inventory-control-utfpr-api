@@ -48,10 +48,19 @@ module.exports.getAllRequisition = function (callback) {
 	Requisition.find().populate('history').populate('requesterId').exec(callback);
 };
 
-module.exports.addNewRequisition = function (newRequisition, callback) {
+module.exports.addNewRequisition = function (updatedRequisition, callback) {
 	// saves the creation on history
 	// newRequisition.date = moment();
-	newRequisition.changeJustification = "Criação da requisição"
+	let newRequisition = {}
+	newRequisition.siorg = updatedRequisition.siorg;
+	newRequisition.description = updatedRequisition.description;
+	newRequisition.justification = updatedRequisition.justification;
+	newRequisition.quotation = updatedRequisition.quotation;
+	newRequisition.qtd = updatedRequisition.qtd;
+	newRequisition.status = updatedRequisition.status;
+	newRequisition.requesterId = updatedRequisition.requesterId;
+
+	
 	RequisitionHistory.addNewHistory(newRequisition, (err, history) => {
 		if (err) {
 			return callback(true, null)

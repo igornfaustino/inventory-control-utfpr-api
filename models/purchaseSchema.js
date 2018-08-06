@@ -22,7 +22,7 @@ const PurchaseSchema = mongoose.Schema({
     requisitionDate: Date,
     UGR: String,
     sector: String,
-    requester: String,
+    requester: { type: mongoose.Schema.Types.ObjectId, ref: 'User', require: true },
     requisitionItems: [{
         item: { type: mongoose.Schema.Types.ObjectId, ref: 'Requisition' },
         itemSupplier: { type: mongoose.Schema.Types.ObjectId, ref: 'Supplier' },
@@ -38,7 +38,7 @@ module.exports.getPurchaseById = function (id, callback) {
         if (err) {
             return callback(true, null)
         }
-        purchase.populate('requisitionItems.item').populate('requisitionItems.itemSupplier', callback)
+        purchase.populate('requisitionItems.item').populate('requester').populate('requisitionItems.item.requesterId').populate('requisitionItems.itemSupplier', callback)
     });
 }
 
@@ -47,7 +47,7 @@ module.exports.getAllPurchases = function (callback) {
         if (err) {
             return callback(true, null)
         }
-        Purchase.populate(purchase, 'requisitionItems.item requisitionItems.itemSupplier', callback)
+        Purchase.populate(purchase, 'requester requisitionItems.item  requisitionItems.item.requesterId requisitionItems.itemSupplier', callback)
     });
 }
 
@@ -78,6 +78,14 @@ module.exports.getAllItens = function (purchaseId, callback) {
         if (err) {
             return callback(true, null)
         }
-        Purchase.populate(purchase, 'requisitionItems.item', callback)
+        Purchase.populate(purchase, 'requester requisitionItems.item requisitionItems.item.requesterId', callback)
+    });
+}
+module.exports.getItem = function (requisitionId, callback) {
+    Purchase.find({'requisitionItems.item': {_id: requisitionId}}).exec((err, purchase) => {
+        if (err) {
+            return callback(true, null)
+        }
+        Purchase.populate(purchase, 'requester requisitionItems.item requisitionItems.item.requesterId', callback)
     });
 }
